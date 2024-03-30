@@ -146,6 +146,7 @@ namespace CombatAI
             {
 	            Finder.Settings.ResetTechSettings();
             }
+            collapsible.CheckboxLabeled(Keyed.CombatAI_Settings_Basic_FoodWealth, ref Finder.Settings.EnableExcludeFoodFromWealth);
             collapsible.CheckboxLabeled(Keyed.CombatAI_Settings_Basic_Caster, ref Finder.Settings.Caster_Enabled);
             collapsible.CheckboxLabeled(Keyed.CombatAI_Settings_Basic_Targeter, ref Finder.Settings.Targeter_Enabled);
             collapsible.CheckboxLabeled(Keyed.CombatAI_Settings_Basic_Flanking, ref Finder.Settings.Flank_Enabled);

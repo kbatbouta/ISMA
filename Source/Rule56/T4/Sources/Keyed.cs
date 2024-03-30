@@ -632,6 +632,16 @@ namespace CombatAI.R
                    _CombatAI_Settings_Basic_Caster : _CombatAI_Settings_Basic_Caster = "CombatAI.Settings.Basic.Caster".Translate();
         }             
                       
+        private static TaggedString _CombatAI_Settings_Basic_FoodWealth = null;
+        /// <summary> Keyed string. key=<c>CombatAI.Settings.Basic.FoodWealth</c>. inner text:
+        ///
+        /// <code>Exclude food from wealth calculation</code>
+        /// </summary>       
+        public static TaggedString CombatAI_Settings_Basic_FoodWealth {
+            get => _CombatAI_Settings_Basic_FoodWealth != null ? 
+                   _CombatAI_Settings_Basic_FoodWealth : _CombatAI_Settings_Basic_FoodWealth = "CombatAI.Settings.Basic.FoodWealth".Translate();
+        }             
+                      
         private static TaggedString _CombatAI_Settings_Basic_Targeter = null;
         /// <summary> Keyed string. key=<c>CombatAI.Settings.Basic.Targeter</c>. inner text:
         ///

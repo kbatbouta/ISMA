@@ -52,6 +52,8 @@ namespace CombatAI
         public bool FogOfWar_Allies           = true;
         public bool FogOfWar_Animals          = true;
         public bool FogOfWar_AnimalsSmartOnly = true;
+        
+        public bool EnableExcludeFoodFromWealth = true;
 
         public bool  FogOfWar_Enabled;
         public bool  FogOfWar_OldShader           = true;
@@ -164,7 +166,7 @@ namespace CombatAI
                 SightSettings_SettlementTurrets = new SightPerformanceSettings(3, 15, 12, 1);
             }
             Scribe_Values.Look(ref LeanCE_Enabled, $"LeanCE_Enabled.{version}");
-
+			Scribe_Values.Look(ref EnableExcludeFoodFromWealth, "Wealth_ExcludeFoodFromWealth", true);
 #if DEBUG
 			Scribe_Values.Look(ref Debug, $"Debug.Debug.{version}", true);
 			Scribe_Values.Look(ref Debug_LogJobs, $"Debug.Debug_LogJobs.1.{version}", true);

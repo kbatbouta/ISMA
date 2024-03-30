@@ -61,6 +61,7 @@
     <CombatAI.Settings.Basic.PerformanceOpt.Warning>WARNING: NOT having dynamic performance settings ON will result in lag spikes and lose of performance!</CombatAI.Settings.Basic.PerformanceOpt.Warning>
     <CombatAI.Settings.Basic.PerformanceOpt.Description>Automatically adjust settings to maintain both a good level of TPS and a good AI.</CombatAI.Settings.Basic.PerformanceOpt.Description>
     <CombatAI.Settings.Basic.Caster>Enable fire position tweaks</CombatAI.Settings.Basic.Caster>
+    <CombatAI.Settings.Basic.FoodWealth>Exclude food from wealth calculation</CombatAI.Settings.Basic.FoodWealth>
     <CombatAI.Settings.Basic.Targeter>Enable target selection tweaks</CombatAI.Settings.Basic.Targeter>
     <CombatAI.Settings.Basic.Flanking>Enable aggressive flanking</CombatAI.Settings.Basic.Flanking>
     <CombatAI.Settings.Basic.Reaction>Enable fast reactions</CombatAI.Settings.Basic.Reaction>
