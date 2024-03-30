@@ -10,6 +10,7 @@ namespace CombatAI
         {
 	        float sappingTech = 1;
 	        Finder.Settings.ResetTechSettings();
+	        Finder.Settings.Personalities_Enabled = true;
             switch (difficulty)
             {
                 case Difficulty.Easy:
@@ -193,10 +194,6 @@ namespace CombatAI
                         Finder.Settings.SightSettings_MechsAndInsects.buckets = 5;
                     }
                     break;
-            }
-            foreach (TechLevel tech in Enum.GetValues(typeof(TechLevel)))
-            {
-	            Finder.Settings.GetTechSettings(tech).sapping *= sappingTech;
             }
         }
     }

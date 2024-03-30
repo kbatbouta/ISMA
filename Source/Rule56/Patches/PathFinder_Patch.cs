@@ -100,24 +100,20 @@ namespace CombatAI.Patches
                         visibilityAtDest   = sightReader.GetVisibilityToEnemies(dest.Cell) * Finder.Settings.Pathfinding_DestWeight;
                         comp               = pawn.AI();
                         Verb verb = pawn.TryGetAttackVerb();
-                        if (dig = ((settings?.Pather_KillboxKiller ?? true)
-                                   && (verb == null || (!verb.IsIncendiary_Ranged() &&
-                                                        !(verb is Verb_ShootBeam || verb is Verb_SpewFire)))
-                                   && isRaider
-                                   && (pawn.guest == null || !pawn.guest.IsPrisoner)
-                                   && comp != null && comp.CanSappOrEscort && !comp.IsSapping
-                                   && !pawn.mindState.duty.Is(DutyDefOf.Sapper) && !pawn.CurJob.Is(JobDefOf.Mine) &&
-                                   !pawn.mindState.duty.Is(DutyDefOf.ExitMapRandom) &&
-                                   !pawn.mindState.duty.Is(DutyDefOf.Escort)))
-                        { 
+                        if (CanDig(settings, verb))
+                        {
+	                        dig      = true;
 	                        isRaider = true;
-                            float costMultiplier = personality.sapping;
+                            float costMultiplier = 1 / Math.Max(personality.sapping, 0.001f);
                             bool  tunneler       = pawn.def == CombatAI_ThingDefOf.Mech_Tunneler;
                             float miningSkill    = pawn.skills?.GetSkill(SkillDefOf.Mining)?.Level ?? (tunneler ? 15f : 0f);
                             if (!Mod_CE.active && miningSkill < 9 && verb != null && !verb.IsMeleeAttack && !(verb.IsEMP()  || (verb.verbProps.CausesExplosion && verb.verbProps.defaultProjectile?.projectile?.explosionRadius > 2)))
                             {
-	                            tunneler       =  true;
-	                            miningSkill    =  Maths.Max(verb.verbProps.defaultProjectile.projectile.damageAmountBase * verb.verbProps.burstShotCount / 4f, miningSkill);
+	                            tunneler = true;
+	                            if (verb.verbProps.defaultProjectile != null)
+	                            {
+		                            miningSkill = Maths.Max(verb.verbProps.defaultProjectile.projectile.damageAmountBase * verb.verbProps.burstShotCount / 4f, miningSkill);
+	                            }
                             }
                             TraverseParms parms = traverseParms;
                             parms.maxDanger     = Danger.Deadly;
@@ -157,6 +153,19 @@ namespace CombatAI.Patches
                 __state = false;
                 Reset();
                 return;
+            }
+            private static bool CanDig(Settings.DefKindAISettings settings, Verb verb)
+            {
+
+	            return ((settings?.Pather_KillboxKiller ?? true)
+	                          && (verb == null || (!verb.IsIncendiary_Ranged() &&
+	                                               !(verb is Verb_ShootBeam || verb is Verb_SpewFire)))
+	                          && isRaider
+	                          && (pawn.guest == null || !pawn.guest.IsPrisoner)
+	                          && comp != null && comp.CanSappOrEscort && !comp.IsSapping
+	                          && !pawn.mindState.duty.Is(DutyDefOf.Sapper) && !pawn.CurJob.Is(JobDefOf.Mine) &&
+	                          !pawn.mindState.duty.Is(DutyDefOf.ExitMapRandom) &&
+	                          !pawn.mindState.duty.Is(DutyDefOf.Escort));
             }
 
             [HarmonyPriority(int.MinValue)]

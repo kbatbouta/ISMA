@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using CombatAI.Comps;
 using CombatAI.Patches;
 using CombatAI.Squads;
@@ -22,6 +23,40 @@ namespace CombatAI
 			    return comp.HasAttachment(ThingDefOf.Fire);
 		    }
 		    return false;
+	    }
+
+	    public static T[] Join<T>(this T[] a, T[] b)
+	    {
+		    T[] array = new T[a.Length + b.Length];
+		    int index = 0;
+		    for (int i = 0; i < a.Length; i++)
+		    {
+			    array[index++] = a[i];
+		    }
+		    for (int i = 0; i < b.Length; i++)
+		    {
+			    array[index++] = b[i];
+		    }
+		    return array;
+	    }
+	    
+	    public static T[] Join<T>(this T[] a, T[] b, T[] c)
+	    {
+		    T[] array = new T[a.Length + b.Length + c.Length];
+		    int index = 0;
+		    for (int i = 0; i < a.Length; i++)
+		    {
+			    array[index++] = a[i];
+		    }
+		    for (int i = 0; i < b.Length; i++)
+		    {
+			    array[index++] = b[i];
+		    }
+		    for (int i = 0; i < c.Length; i++)
+		    {
+			    array[index++] = c[i];
+		    }
+		    return array;
 	    }
 	    
 	    [MethodImpl(MethodImplOptions.AggressiveInlining)]

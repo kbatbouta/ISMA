@@ -34,6 +34,19 @@ namespace CombatAI
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Clear()
+        {
+	        if (TCacheHelper.IndexGetter<T>.indexable)
+	        {
+		        dict_indexed.Clear();
+	        }
+	        else
+	        {
+		        dict.Clear();
+	        }
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool TryGet(T key, out V val, int expiry = -1)
         {
 	        unsafe

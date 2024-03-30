@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -31,12 +32,12 @@ namespace CombatAI
 		public  bool[] grid;
 		private bool   initialized;
 
-		private          Rect      mapScreenRect;
-		private          bool      ready;
-		public           SightGrid sight;
-		private volatile int       ticksGame;
-		private          int       updateNum;
-		public           WallGrid  walls;
+		private          Rect        mapScreenRect;
+		private          bool        ready;
+		public           SightGrid[] sight;
+		private volatile int         ticksGame;
+		private          int         updateNum;
+		public           WallGrid    walls;
 
 
 		static MapComponent_FogGrid()
@@ -135,7 +136,6 @@ namespace CombatAI
 				rect.yMin     = Mathf.Clamp(cellRect.minZ - SECTION_SIZE, 0, cellIndices.mapSizeZ);
 				rect.yMax     = Mathf.Clamp(cellRect.maxZ + SECTION_SIZE, 0, cellIndices.mapSizeZ);
 				mapScreenRect = rect;
-				//mapScreenRect.ExpandedBy(32, 32);
 				asyncActions.ExecuteMainThreadActions();
 				zoom = Mathf.CeilToInt(Mathf.Clamp(Find.CameraDriver?.rootPos.y ?? 30, 15, 30f));
 				DrawFog(Mathf.FloorToInt(mapScreenRect.xMin / SECTION_SIZE), Mathf.FloorToInt(mapScreenRect.yMin / SECTION_SIZE), Mathf.FloorToInt(mapScreenRect.xMax / SECTION_SIZE), Mathf.FloorToInt(mapScreenRect.yMax / SECTION_SIZE));
@@ -195,9 +195,9 @@ namespace CombatAI
 			List<ITempSpot> spots     = new List<ITempSpot>();
 			while (alive)
 			{
-				stopwatch.Restart();
 				if (ready && Finder.Settings.FogOfWar_Enabled)
 				{
+					stopwatch.Restart();
 					lock (_lockerSpots)
 					{
 						if (spotsQueued.Count > 0)
@@ -225,7 +225,7 @@ namespace CombatAI
 										tCell.u         = (byte)(cell.x % SECTION_SIZE);
 										tCell.v         = (byte)(cell.z % SECTION_SIZE);
 										tCell.val       = Mathf.Clamp01(1f - cell.DistanceTo_Fast(spot.center) / spot.radius);
-										tCell.timestamp = GenTicks.TicksGame;
+										tCell.timestamp = ticks;
 										tCell.duration  = (short)spot.duration;
 										section.extraCells.Add(tCell);
 									}
@@ -303,7 +303,6 @@ namespace CombatAI
 				}
 				int         numGridCells = indices.NumGridCells;
 				WallGrid    walls        = comp.walls;
-				ITFloatGrid fogGrid      = comp.sight.gridFog;
 				IntVec3     pos          = this.pos.ToIntVec3();
 				IntVec3     loc;
 
@@ -319,14 +318,23 @@ namespace CombatAI
 						float old           = cells[x * SECTION_SIZE + z];
 						bool  isWall        = !walls.CanBeSeenOver(index);
 						float visRLimit     = 0;
-						float visibility    = fogGrid.Get(index);
+						float visibility    = 0;
+						for (int j = 0; j < comp.sight.Length; j++)
+						{
+							visibility = Maths.Max(comp.sight[j].gridFog.Get(index), visibility);
+						}
 						float visibilityAdj = 0;
 						for (int i = 0; i < 9; i++)
 						{
 							int adjIndex = index + indices.mapSizeX * (i / 3 - 1) + i % 3 - 1;
 							if (adjIndex >= 0 && adjIndex < numGridCells && (isWall || walls.CanBeSeenOver(adjIndex)))
 							{
-								visibilityAdj += fogGrid.Get(adjIndex);
+								float adj = 0;
+								for (int j = 0; j < comp.sight.Length; j++)
+								{
+									adj = Maths.Max(adj, comp.sight[j].gridFog.Get(adjIndex));
+								}
+								visibilityAdj += adj;
 							}
 						}
 						visibility = Maths.Max(visibilityAdj / 9, visibility) + visibilityOffset;
@@ -372,8 +380,7 @@ namespace CombatAI
 						cells[x * SECTION_SIZE + z] = 0f;
 					}
 				}
-
-				if (fogGrid != null)
+				if (comp.sight != null)
 				{
 					for (int x = 0; x < SECTION_SIZE; x++)
 					{
@@ -384,6 +391,8 @@ namespace CombatAI
 					}
 					int ticks = comp.ticksGame;
 					int i     = 0;
+					/*
+					TODO fix this
 					while (i < extraCells.Count)
 					{
 						ITempCell tCell = extraCells[i];
@@ -394,9 +403,9 @@ namespace CombatAI
 							continue;
 						}
 						i++;
-						float fade = Mathf.Lerp(0.7f, 1.0f, 1f - (float)(GenTicks.TicksGame - tCell.timestamp) / tCell.duration);
+						float fade = Maths.Max(cells[tCell.u * SECTION_SIZE + tCell.v], Mathf.Lerp(0.7f, 1.0f, 1f - (float)(GenTicks.TicksGame - tCell.timestamp) / tCell.duration));
 						SetCell(tCell.u, tCell.v, 0.5f * fade * tCell.val, fade * tCell.val, false);
-					}
+					}*/
 				}
 				dirty = changed;
 			}

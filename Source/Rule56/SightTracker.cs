@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using CombatAI.Comps;
+using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -10,50 +11,65 @@ namespace CombatAI
 {
     public class SightTracker : MapComponent
     {
+	    
 	    private readonly        HashSet<IntVec3> _drawnCells  = new HashSet<IntVec3>();
         private                 int              updateCounter;
 
-        public readonly SightGrid        colonistsAndFriendlies;
+        public readonly SightGrid[]      colonistsAndFriendlies;
         public readonly IThingsUInt64Map factionedUInt64Map;
-
-        public readonly ITFloatGrid      fogGrid;
-        public readonly SightGrid        insectsAndMechs;
-        public readonly SightGrid        raidersAndHostiles;
-        public readonly SightGrid        wildlife;
+        
+        public readonly SightGrid[]      insectsAndMechs;
+        public readonly SightGrid[]      raidersAndHostiles;
+        public readonly SightGrid[]      wildlife;
         public readonly IThingsUInt64Map wildUInt64Map;
 
+        public readonly List<SightGrid> grids;
+        
         public SightTracker(Map map) : base(map)
         {
-            fogGrid = new ITFloatGrid(map);
-            colonistsAndFriendlies =
-                new SightGrid(this, Finder.Settings.SightSettings_FriendliesAndRaiders, 0);
-            colonistsAndFriendlies.gridFog        = fogGrid;
-            colonistsAndFriendlies.playerAlliance = true;
-            colonistsAndFriendlies.trackFactions  = true;
-
-            raidersAndHostiles =
-                new SightGrid(this, Finder.Settings.SightSettings_FriendliesAndRaiders, 1);
-            raidersAndHostiles.trackFactions = true;
-
-            insectsAndMechs =
-                new SightGrid(this, Finder.Settings.SightSettings_MechsAndInsects, 2);
-            insectsAndMechs.trackFactions = false;
-
-            wildlife =
-                new SightGrid(this, Finder.Settings.SightSettings_Wildlife, 3);
-            wildlife.trackFactions = false;
-
+            colonistsAndFriendlies = new SightGrid[Finder.Settings.SightSettings_FriendliesAndRaiders.threads];
+            int id = 0;
+            for (int i = 0; i < colonistsAndFriendlies.Length; i++)
+            {
+	            colonistsAndFriendlies[i] = new SightGrid(this, Finder.Settings.SightSettings_FriendliesAndRaiders, id++)
+	            {
+		            gridFog        = new ITFloatGrid(map),
+		            playerAlliance = true,
+		            trackFactions  = true
+	            };
+            }
+            raidersAndHostiles = new SightGrid[Finder.Settings.SightSettings_FriendliesAndRaiders.threads];
+            for (int i = 0; i < raidersAndHostiles.Length; i++)
+            {
+	            raidersAndHostiles[i] = new SightGrid(this, Finder.Settings.SightSettings_FriendliesAndRaiders, id++) { trackFactions = true };
+            }
+            insectsAndMechs = new SightGrid[Finder.Settings.SightSettings_MechsAndInsects.threads];
+            for (int i = 0; i < insectsAndMechs.Length; i++)
+            {
+	            insectsAndMechs[i] = new SightGrid(this, Finder.Settings.SightSettings_MechsAndInsects, id++) { trackFactions = false };
+            }
+            wildlife = new SightGrid[Finder.Settings.SightSettings_Wildlife.threads];
+            for (int i = 0; i < wildlife.Length; i++)
+            {
+	            wildlife[i] = new SightGrid(this, Finder.Settings.SightSettings_Wildlife, id++) { trackFactions = false };
+            }
             factionedUInt64Map = new IThingsUInt64Map();
             wildUInt64Map      = new IThingsUInt64Map();
+
+            grids = new List<SightGrid>();
+            grids.AddRange(colonistsAndFriendlies);
+            grids.AddRange(raidersAndHostiles);
+            grids.AddRange(insectsAndMechs);
+            grids.AddRange(wildlife);
         }
 
         public override void FinalizeInit()
         {
             base.FinalizeInit();
-            colonistsAndFriendlies.FinalizeInit();
-            raidersAndHostiles.FinalizeInit();
-            insectsAndMechs.FinalizeInit();
-            wildlife.FinalizeInit();
+            foreach (SightGrid grid in grids)
+            {
+	            grid.FinalizeInit();
+            }
         }
 
         public override void MapComponentUpdate()
@@ -67,26 +83,37 @@ namespace CombatAI
                 gamePaused      = Find.TickManager.Paused;
                 performanceOkay = Finder.Performance.TpsDeficit <= 5 * Find.TickManager.TickRateMultiplier;
             }
-            // --------------
-            colonistsAndFriendlies.SightGridUpdate();
-            colonistsAndFriendlies.SightGridOptionalUpdate(gamePaused, performanceOkay);
-            // --------------
-            if (colonistsAndFriendlies.FactionNum > 1 || updateCounter % 3 == 0)
+            foreach (SightGrid grid in colonistsAndFriendlies)
             {
-                raidersAndHostiles.SightGridUpdate();
+	            grid.SightGridUpdate();
+	            grid.SightGridOptionalUpdate(gamePaused, performanceOkay);
             }
-            raidersAndHostiles.SightGridOptionalUpdate(gamePaused, performanceOkay);
-            // --------------
-            if ((!Finder.Performance.TpsCriticallyLow && colonistsAndFriendlies.FactionNum > 1) || updateCounter % 3 == 1)
+            foreach (SightGrid grid in raidersAndHostiles)
             {
-	            insectsAndMechs.SightGridUpdate();
+	            grid.SightGridUpdate();
+	            grid.SightGridOptionalUpdate(gamePaused, performanceOkay);   
             }
-            insectsAndMechs.SightGridOptionalUpdate(gamePaused, performanceOkay);
-            // --------------
-            wildlife.SightGridUpdate();
+            if (!Finder.Performance.TpsCriticallyLow || updateCounter % 3 == 1)
+            {
+	            foreach (SightGrid grid in insectsAndMechs)
+	            {
+		            grid.SightGridUpdate();
+	            }
+            }
+            foreach (SightGrid grid in insectsAndMechs)
+            {
+	            grid.SightGridOptionalUpdate(gamePaused, performanceOkay);
+            }
             if (!Finder.Performance.TpsCriticallyLow || updateCounter % 3 == 2)
             {
-	            wildlife.SightGridOptionalUpdate(gamePaused, performanceOkay);
+	            foreach (SightGrid grid in wildlife)
+	            {
+		            grid.SightGridUpdate();
+	            }
+            }
+            foreach (SightGrid grid in wildlife)
+            {
+	            grid.SightGridOptionalUpdate(gamePaused, performanceOkay);
             }
         }
 
@@ -134,9 +161,6 @@ namespace CombatAI
                                                 {
                                                     map.debugDrawer.FlashCell(cell, Mathf.Clamp01(value / 20f), $"{Math.Round(value, 2)}", 15);
                                                 }
-                                                //var value = reader.hostiles[0].GetSharp(cell) + reader.hostiles[0].GetBlunt(cell);
-                                                //if (value > 0)
-                                                //	map.debugDrawer.FlashCell(cell, Mathf.Clamp01(value / 4f), $"{Math.Round(reader.hostiles[0].GetSharp(cell), 2)} {Math.Round(reader.hostiles[0].GetBlunt(cell), 2)}", 15);
                                             }
                                             else if (Finder.Settings.Debug_DrawShadowCasts)
                                             {
@@ -158,7 +182,6 @@ namespace CombatAI
 	                                            }
 	                                            else
 	                                            {
-//		                                            List<Thing> store = new List<Thing>();
 		                                            IntVec3     loc   = reader.GetNearestEnemy(cell);
 		                                            if (loc.IsValid)
 		                                            {
@@ -190,14 +213,14 @@ namespace CombatAI
                                     {
                                         if (!Input.GetKey(KeyCode.LeftShift))
                                         {
-                                            float value = raidersAndHostiles.grid.GetSignalStrengthAt(cell, out int enemies1) + colonistsAndFriendlies.grid.GetSignalStrengthAt(cell, out int enemies2) + insectsAndMechs.grid.GetSignalStrengthAt(cell, out int enemies4) + wildlife.grid.GetSignalStrengthAt(cell, out int enemies5);
+                                            float value = grids.Sum(g => g.grid.GetSignalStrengthAt(cell));
                                             if (value > 0)
                                             {
                                                 map.debugDrawer.FlashCell(cell, Mathf.Clamp01(value / 20f), $"{Math.Round(value, 2)}", 15);
                                             }
                                             else
                                             {
-                                                MetaCombatAttribute attr = raidersAndHostiles.grid.GetCombatAttributesAt(cell) | colonistsAndFriendlies.grid.GetCombatAttributesAt(cell) | insectsAndMechs.grid.GetCombatAttributesAt(cell);
+                                                MetaCombatAttribute attr = grids.Select(g => g.grid.GetCombatAttributesAt(cell)).Aggregate((g1, g2) => g1 | g2);
                                                 if ((attr & MetaCombatAttribute.Free) == MetaCombatAttribute.Free)
                                                 {
                                                     map.debugDrawer.FlashCell(cell, 0.001f, "F", 15);
@@ -207,7 +230,7 @@ namespace CombatAI
                                         else
                                         {
                                             Region region = cell.GetRegion(map);
-                                            float  value  = raidersAndHostiles.grid_regions.GetSignalNumByRegion(region) + colonistsAndFriendlies.grid_regions.GetSignalNumByRegion(region) + insectsAndMechs.grid_regions.GetSignalNumByRegion(region) + wildlife.grid_regions.GetSignalNumByRegion(region);
+                                            float  value  = grids.Select(g => g.grid_regions.GetSignalNumByRegion(region)).Sum();
                                             if (value > 0)
                                             {
                                                 map.debugDrawer.FlashCell(cell, Mathf.Clamp01(value / 20f), $"{Math.Round(value, 2)}", 15);
@@ -218,7 +241,7 @@ namespace CombatAI
                                     {
 	                                    if (!Input.GetKey(KeyCode.LeftShift))
 	                                    {
-		                                    float value = raidersAndHostiles.grid.GetAvailability(cell) + colonistsAndFriendlies.grid.GetAvailability(cell) + insectsAndMechs.grid.GetAvailability(cell);
+		                                    float value = grids.Select(g => g.grid.GetAvailability(cell)).Sum();
 		                                    if (value > 0)
 		                                    {
 			                                    map.debugDrawer.FlashCell(cell, Mathf.Clamp01(value / 20f), $"{Math.Round(value, 2)}", 15);
@@ -226,7 +249,7 @@ namespace CombatAI
 	                                    }
 	                                    else
 	                                    {
-		                                    IntVec3 loc  = raidersAndHostiles.grid.GetNearestSourceAt(cell);
+		                                    IntVec3 loc = grids.Select(g => g.grid.GetNearestSourceAt(cell)).Aggregate((a, b) => a + b);
 		                                    if (loc.IsValid)
 		                                    {
 			                                    float value = loc.DistanceTo(cell);
@@ -257,7 +280,7 @@ namespace CombatAI
                 Vector3 mousePos = UI.MouseMapPosition();
                 Widgets.Label(new Rect(0, 0, 25, 200), $"{mousePos}");
             }
-            Widgets.DrawBoxSolid(new Rect(0, 0, 3, 3), colonistsAndFriendlies.FactionNum == 1 ? Color.blue : colonistsAndFriendlies.FactionNum > 1 ? Color.green : Color.yellow);
+            // Widgets.DrawBoxSolid(new Rect(0, 0, 3, 3), colonistsAndFriendlies.FactionNum == 1 ? Color.blue : colonistsAndFriendlies.FactionNum > 1 ? Color.green : Color.yellow);
             if (Finder.Settings.Debug_DrawShadowCastsVectors)
             {
                 TurretTracker turretTracker = map.GetComponent<TurretTracker>();
@@ -266,8 +289,8 @@ namespace CombatAI
                 {
                     foreach (IntVec3 cell in GenRadial.RadialCellsAround(center, 24, true))
                     {
-                        float   enemies = raidersAndHostiles.grid.GetSignalNum(cell) + colonistsAndFriendlies.grid.GetSignalNum(cell);
-                        Vector3 dir     = (colonistsAndFriendlies.grid.GetSignalDirectionAt(cell) + raidersAndHostiles.grid.GetSignalDirectionAt(cell)).normalized * 3;
+                        float   enemies = grids.Select(g => g.grid.GetSignalNum(cell)).Sum();
+                        Vector3 dir     = grids.Select(g => g.grid.GetSignalDirectionAt(cell)).Aggregate((a, b) => a + b);
                         if (cell.InBounds(map) && enemies > 0)
                         {
                             Vector2 direction = dir * 0.25f;
@@ -290,148 +313,63 @@ namespace CombatAI
                 }
             }
         }
-
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryGetReader(Thing thing, out SightReader reader)
-        {
-            Faction faction = thing.Faction;
-            if (faction == null)
-            {
-                reader = new SightReader(this,
-                                         new SightGrid[]
-                                         {
-                                         },
-                                         new[]
-                                         {
-                                             insectsAndMechs
-                                         },
-                                         new[]
-                                         {
-                                             wildlife, colonistsAndFriendlies, raidersAndHostiles
-                                         });
-                return true;
-            }
-            if (faction.def == FactionDefOf.Mechanoid || faction.def == FactionDefOf.Insect)
-            {
-                reader = new SightReader(this,
-                                         new[]
-                                         {
-                                             insectsAndMechs
-                                         },
-                                         new[]
-                                         {
-                                             colonistsAndFriendlies, raidersAndHostiles
-                                         },
-                                         new[]
-                                         {
-                                             wildlife
-                                         });
-                return true;
-            }
-            Faction playerFaction = Faction.OfPlayerSilentFail;
-            if (playerFaction != null && !thing.HostileTo(playerFaction))
-            {
-                reader = new SightReader(this,
-                                         new[]
-                                         {
-                                             colonistsAndFriendlies
-                                         },
-                                         new[]
-                                         {
-                                             raidersAndHostiles, insectsAndMechs
-                                         },
-                                         new[]
-                                         {
-                                             wildlife
-                                         });
-            }
-            else
-            {
-                reader = new SightReader(this,
-                                         new[]
-                                         {
-                                             raidersAndHostiles
-                                         },
-                                         new[]
-                                         {
-                                             colonistsAndFriendlies, insectsAndMechs
-                                         },
-                                         new[]
-                                         {
-                                             wildlife
-                                         });
-            }
-            return true;
+        {;
+	        return TryGetReader(thing?.Faction ?? null, out reader);
         }
-
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryGetReader(Faction faction, out SightReader reader)
         {
+	        lock (this)
+	        {
+		        TryGetReader_Internal(faction, out reader);
+	        }
+	        return reader != null;
+        }
+        
+        private SightReader _wildlife;
+        private SightReader _friendlies;
+        private SightReader _hostiles;
+        private SightReader _insects;
+
+        private void TryGetReader_Internal(Faction faction, out SightReader reader)
+        {
             if (faction == null)
             {
-                reader = new SightReader(this,
-                                         new SightGrid[]
-                                         {
-                                         },
-                                         new[]
-                                         {
-                                             insectsAndMechs
-                                         },
-                                         new[]
-                                         {
-                                             wildlife, colonistsAndFriendlies, raidersAndHostiles
-                                         });
-                return true;
+                reader = (SightReader)(_wildlife ??= new SightReader(this,
+                                                                     new SightGrid[]
+                                                                     {
+                                                                     },
+                                                                     insectsAndMechs.ToArray(),
+                                                                     colonistsAndFriendlies.Join(raidersAndHostiles, wildlife))).CloneBaseReader();
+                return;
             }
             if (faction.def == FactionDefOf.Mechanoid || faction.def == FactionDefOf.Insect)
             {
-                reader = new SightReader(this,
-                                         new[]
-                                         {
-                                             insectsAndMechs
-                                         },
-                                         new[]
-                                         {
-                                             colonistsAndFriendlies, raidersAndHostiles
-                                         },
-                                         new[]
-                                         {
-                                             wildlife
-                                         });
-                return true;
+                reader = (SightReader)(_insects ??= new SightReader(this,
+                                                                    insectsAndMechs.ToArray(),
+                                                                    colonistsAndFriendlies.Join(raidersAndHostiles),
+                                                                    wildlife.ToArray())).CloneBaseReader();
+                return;
             }
             Faction playerFaction = Faction.OfPlayerSilentFail;
             if (playerFaction != null && !faction.HostileTo(playerFaction))
             {
-                reader = new SightReader(this,
-                                         new[]
-                                         {
-                                             colonistsAndFriendlies
-                                         },
-                                         new[]
-                                         {
-                                             raidersAndHostiles, insectsAndMechs
-                                         },
-                                         new[]
-                                         {
-                                             wildlife
-                                         });
+	            reader = (SightReader)(_friendlies ??= new SightReader(this,
+	                                                                   colonistsAndFriendlies.ToArray(),
+	                                                                   raidersAndHostiles.Join(insectsAndMechs),
+	                                                                   wildlife.ToArray())).CloneBaseReader();
             }
             else
             {
-                reader = new SightReader(this,
-                                         new[]
-                                         {
-                                             raidersAndHostiles
-                                         },
-                                         new[]
-                                         {
-                                             colonistsAndFriendlies, insectsAndMechs
-                                         },
-                                         new[]
-                                         {
-                                             wildlife
-                                         });
+	            reader = (SightReader)(_hostiles ??= new SightReader(this,
+	                                                                 raidersAndHostiles.ToArray(),
+	                                                                 colonistsAndFriendlies.Join(insectsAndMechs),
+	                                                                 wildlife.ToArray())).CloneBaseReader();
             }
-            return true;
         }
 
         public void Register(Thing thing)
@@ -441,34 +379,30 @@ namespace CombatAI
             // make sure it's not already in.
             wildUInt64Map.Remove(thing);
             // make sure it's not already in.
-            colonistsAndFriendlies.TryDeRegister(thing);
-            // make sure it's not already in.
-            raidersAndHostiles.TryDeRegister(thing);
-            // make sure it's not already in.
-            insectsAndMechs.TryDeRegister(thing);
-            // make sure it's not already in.
-            wildlife.TryDeRegister(thing);
-
+            foreach (SightGrid grid in grids)
+            {
+	            grid.TryDeRegister(thing);
+            }
             Faction faction = thing.Faction;
             Faction playerFaction;
             if (faction == null)
             {
-                wildlife.Register(thing);
+                wildlife[thing.thingIDNumber % wildlife.Length].Register(thing);
                 wildUInt64Map.Add(thing);
             }
             else if (faction.def == FactionDefOf.Insect || faction.def == FactionDefOf.Mechanoid)
             {
-                insectsAndMechs.Register(thing);
+                insectsAndMechs[thing.thingIDNumber % insectsAndMechs.Length].Register(thing);
                 factionedUInt64Map.Add(thing);
             }
             else if ((playerFaction = Faction.OfPlayerSilentFail) != null && !thing.HostileTo(playerFaction))
             {
-                colonistsAndFriendlies.Register(thing);
+                colonistsAndFriendlies[thing.thingIDNumber % colonistsAndFriendlies.Length].Register(thing);
                 factionedUInt64Map.Add(thing);
             }
             else
             {
-                raidersAndHostiles.Register(thing);
+                raidersAndHostiles[thing.thingIDNumber % raidersAndHostiles.Length].Register(thing);
                 factionedUInt64Map.Add(thing);
             }
             ThingComp_CombatAI comp = thing.GetComp_Fast<ThingComp_CombatAI>();
@@ -486,13 +420,10 @@ namespace CombatAI
             // cleanup wildlife.
             wildUInt64Map.Remove(thing);
             // cleanup hostiltes incase pawn switched factions.
-            raidersAndHostiles.TryDeRegister(thing);
-            // cleanup friendlies incase pawn switched factions.
-            colonistsAndFriendlies.TryDeRegister(thing);
-            // cleanup universals incase everything else fails.
-            insectsAndMechs.TryDeRegister(thing);
-            // cleanup universals incase everything else fails.
-            wildlife.TryDeRegister(thing);
+            foreach (SightGrid grid in grids)
+            {
+	            grid.TryDeRegister(thing);
+            }
             // notify pawn comps.
             ThingComp_CombatAI comp = thing.GetComp_Fast<ThingComp_CombatAI>();
             if (comp != null)
@@ -523,10 +454,10 @@ namespace CombatAI
 
         public void Notify_RegionChanged(IntVec3 cell, Region region)
         {
-            colonistsAndFriendlies.grid_regions.SetRegionAt(cell, region);
-            raidersAndHostiles.grid_regions.SetRegionAt(cell, region);
-            insectsAndMechs.grid_regions.SetRegionAt(cell, region);
-            wildlife.grid_regions.SetRegionAt(cell, region);
+            foreach (SightGrid grid in grids)
+            {
+	            grid.grid_regions.SetRegionAt(cell, region);
+            }
         }
 
         public override void MapRemoved()
@@ -538,13 +469,10 @@ namespace CombatAI
 
             base.MapRemoved();
             // TODO redo this
-            raidersAndHostiles.Destroy();
-            // TODO redo this
-            colonistsAndFriendlies.Destroy();
-            // TODO redo this
-            insectsAndMechs.Destroy();
-            // TODO redo this
-            wildlife.Destroy();
+            foreach (SightGrid grid in grids)
+            {
+	            grid.Destroy();
+            }
         }
 
         public class SightReader
@@ -589,6 +517,26 @@ namespace CombatAI
                 {
 	                this.neutrals[i] = neutrals[i].grid;
                 }
+            }
+
+            public SightReader(SightReader reader)
+            {
+	            this.Tracker            = reader.Tracker;
+	            this.Map                = reader.Map;
+	            this.indices            = reader.indices;
+	            this.friendlies         = reader.friendlies;
+	            this.hostiles           = reader.hostiles;
+	            this.neutrals           = reader.neutrals;
+	            this.friendlies_regions = reader.friendlies_regions;
+	            this.hostiles_regions   = reader.hostiles_regions;
+	            this.hSight             = reader.hSight;
+	            this.nSight             = reader.nSight;
+	            this.fSight             = reader.fSight;
+            }
+            
+            public object CloneBaseReader()
+            {
+	            return new SightReader(this);
             }
             
             public SightTracker Tracker

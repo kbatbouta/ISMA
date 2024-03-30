@@ -9,7 +9,7 @@ namespace CombatAI
     public class Settings : ModSettings
     {
 
-        private const int version                             = 15;
+        private const int version                             = 17;
         public        int Advanced_SightThreadIdleSleepTimeMS = 1;
 
         /*
@@ -52,6 +52,8 @@ namespace CombatAI
         public bool FogOfWar_Allies           = true;
         public bool FogOfWar_Animals          = true;
         public bool FogOfWar_AnimalsSmartOnly = true;
+        
+        public bool EnableExcludeFoodFromWealth = true;
 
         public bool  FogOfWar_Enabled;
         public bool  FogOfWar_OldShader           = true;
@@ -71,6 +73,7 @@ namespace CombatAI
          */
 
         public bool  LeanCE_Enabled;
+        public bool  RandomizedSettings            = false;
         public bool  Pather_DisableL1L2         = false;
         public float Pathfinding_DestWeight     = 0.85f;
         public float Pathfinding_SappingMul     = 1.0f;
@@ -84,10 +87,10 @@ namespace CombatAI
         private FactionTechSettings       FactionSettings_Undefined = new FactionTechSettings(TechLevel.Undefined, 1, 1, 1, 1, 1,1);
         private List<FactionTechSettings> FactionSettings           = new List<FactionTechSettings>(); 
 
-        public SightPerformanceSettings SightSettings_FriendliesAndRaiders = new SightPerformanceSettings(1, 3, 16);
-        public SightPerformanceSettings SightSettings_MechsAndInsects      = new SightPerformanceSettings(3, 10, 6);
-        public SightPerformanceSettings SightSettings_Wildlife             = new SightPerformanceSettings(3, 10, 4);
-        public SightPerformanceSettings SightSettings_SettlementTurrets    = new SightPerformanceSettings(3, 15, 12);
+        public SightPerformanceSettings SightSettings_FriendliesAndRaiders = new SightPerformanceSettings(1, 3, 16, 1);
+        public SightPerformanceSettings SightSettings_MechsAndInsects      = new SightPerformanceSettings(3, 10, 6, 1);
+        public SightPerformanceSettings SightSettings_Wildlife             = new SightPerformanceSettings(3, 10, 4, 1);
+        public SightPerformanceSettings SightSettings_SettlementTurrets    = new SightPerformanceSettings(3, 15, 12, 1);
         public bool                     Targeter_Enabled                   = true;
 
 
@@ -145,25 +148,25 @@ namespace CombatAI
 	        Scribe_Deep.Look(ref SightSettings_FriendliesAndRaiders, $"CombatAI.SightSettings_FriendliesAndRaiders2.{version}");
             if (SightSettings_FriendliesAndRaiders == null)
             {
-                SightSettings_FriendliesAndRaiders = new SightPerformanceSettings(1, 3, 16);
+                SightSettings_FriendliesAndRaiders = new SightPerformanceSettings(1, 3, 16, 1);
             }
             Scribe_Deep.Look(ref SightSettings_MechsAndInsects, $"CombatAI.SightSettings_MechsAndInsects2.{version}");
             if (SightSettings_MechsAndInsects == null)
             {
-                SightSettings_MechsAndInsects = new SightPerformanceSettings(3, 10, 6);
+                SightSettings_MechsAndInsects = new SightPerformanceSettings(3, 10, 6, 1);
             }
             Scribe_Deep.Look(ref SightSettings_Wildlife, $"CombatAI.SightSettings_Wildlife2.{version}");
             if (SightSettings_Wildlife == null)
             {
-                SightSettings_Wildlife = new SightPerformanceSettings(3, 10, 4);
+                SightSettings_Wildlife = new SightPerformanceSettings(3, 10, 4, 1);
             }
             Scribe_Deep.Look(ref SightSettings_SettlementTurrets, $"CombatAI.SightSettings_SettlementTurrets2.{version}");
             if (SightSettings_SettlementTurrets == null)
             {
-                SightSettings_SettlementTurrets = new SightPerformanceSettings(3, 15, 12);
+                SightSettings_SettlementTurrets = new SightPerformanceSettings(3, 15, 12, 1);
             }
             Scribe_Values.Look(ref LeanCE_Enabled, $"LeanCE_Enabled.{version}");
-
+			Scribe_Values.Look(ref EnableExcludeFoodFromWealth, "Wealth_ExcludeFoodFromWealth", true);
 #if DEBUG
 			Scribe_Values.Look(ref Debug, $"Debug.Debug.{version}", true);
 			Scribe_Values.Look(ref Debug_LogJobs, $"Debug.Debug_LogJobs.1.{version}", true);
@@ -180,6 +183,7 @@ namespace CombatAI
 	        }
 			Scribe_Collections.Look(ref _raceSettings, "raceSettings2");
 			_raceSettings ??= new Dictionary<string, DefKindAISettings>();
+			Scribe_Values.Look(ref RandomizedSettings, $"RandomizedSettings.{version}", false);
             Scribe_Values.Look(ref FinishedQuickSetup, $"FinishedQuickSetup2.{version}");
             Scribe_Values.Look(ref Personalities_Enabled, $"Personalities_Enabled.{version}", true);
             Scribe_Values.Look(ref FogOfWar_OldShader, $"FogOfWar_OldShader.{version}", true);
@@ -229,13 +233,13 @@ namespace CombatAI
         public void ResetTechSettings()
         {
 	        FactionSettings.Clear();
-	        FactionSettings.Add(new FactionTechSettings(TechLevel.Undefined, retreat: 1, duck: 1, cover: 1, sapping: 1, pathing: 1, group: 1));
-	        FactionSettings.Add(new FactionTechSettings(TechLevel.Animal, retreat: 0.0f, duck: 0.0f, cover: 0.25f, sapping: 2.0f, pathing: 1.15f, group: 2.0f));
-	        FactionSettings.Add(new FactionTechSettings(TechLevel.Neolithic, retreat: 0.0f, duck: 0.0f, cover: 0.25f, sapping: 0.75f, pathing: 1.1f, group: 2.0f));
-	        FactionSettings.Add(new FactionTechSettings(TechLevel.Medieval, retreat: 0.25f, duck: 0.25f, cover: 0.5f, sapping: 0.50f, pathing: 1f, group: 2.0f));
+	        FactionSettings.Add(new FactionTechSettings(TechLevel.Undefined, retreat: 1, duck: 1, cover: 1, sapping: 1, pathing: 0.1f, group: 1));
+	        FactionSettings.Add(new FactionTechSettings(TechLevel.Animal, retreat: 0.0f, duck: 0.0f, cover: 0.25f, sapping: 0.25f, pathing: 1.15f, group: 2.0f));
+	        FactionSettings.Add(new FactionTechSettings(TechLevel.Neolithic, retreat: 0.0f, duck: 0.0f, cover: 0.25f, sapping: 0.5f, pathing: 1.1f, group: 2.0f));
+	        FactionSettings.Add(new FactionTechSettings(TechLevel.Medieval, retreat: 0.25f, duck: 0.25f, cover: 0.5f, sapping: 0.75f, pathing: 1f, group: 2.0f));
 	        FactionSettings.Add(new FactionTechSettings(TechLevel.Industrial, retreat: 0.75f, duck: 0.75f, cover: 1, sapping: 1, pathing: 1, group: 1.25f));
 	        FactionSettings.Add(new FactionTechSettings(TechLevel.Spacer, retreat: 0.95f, duck: 0.95f, cover: 1, sapping: 1, pathing: 1, group: 1.0f));
-	        FactionSettings.Add(new FactionTechSettings(TechLevel.Archotech, retreat: 1, duck: 1, cover: 1, sapping: 1, pathing: 0.9f, group: 1.0f));
+	        FactionSettings.Add(new FactionTechSettings(TechLevel.Archotech, retreat: 1, duck: 1, cover: 1, sapping: 1, pathing: 1f, group: 1.0f));
 	        FactionSettings.Add(new FactionTechSettings(TechLevel.Ultra, retreat: 1.0f, duck: 1.0f, cover: 1.0f, sapping: 0.9f, pathing: 1, group: 1.0f));
         }
         /*                 
@@ -275,16 +279,18 @@ namespace CombatAI
             public int buckets;
             public int carryLimit;
             public int interval;
+            public int threads;
 
             public SightPerformanceSettings()
             {
             }
 
-            public SightPerformanceSettings(int interval, int buckets, int carryLimit)
+            public SightPerformanceSettings(int interval, int buckets, int carryLimit, int threads)
             {
                 this.interval   = interval;
                 this.buckets    = buckets;
                 this.carryLimit = carryLimit;
+                this.threads    = threads;
             }
 
             public void ExposeData()
@@ -292,6 +298,7 @@ namespace CombatAI
                 Scribe_Values.Look(ref interval, $"frequency.{version}");
                 Scribe_Values.Look(ref buckets, $"buckets.{version}");
                 Scribe_Values.Look(ref carryLimit, $"carryLimit.{version}");
+                Scribe_Values.Look(ref threads, $"threads.{version}", 1);
             }
         }
 

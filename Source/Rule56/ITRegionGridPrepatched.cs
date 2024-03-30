@@ -122,7 +122,7 @@ namespace CombatAI
         public static ITRegionGridPrepatched.IRegionFields InitRegionFields(Region region)
         {
             ITRegionGridPrepatched.IRegionFields fields = new ITRegionGridPrepatched.IRegionFields();
-            fields.fields = new ITRegionGridPrepatched.IFieldInfo[8];
+            fields.fields = new ITRegionGridPrepatched.IFieldInfo[16];
             return fields;
         }
     }

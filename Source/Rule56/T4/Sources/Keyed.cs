@@ -282,6 +282,26 @@ namespace CombatAI.R
                    _CombatAI_Settings_Basic_Presets : _CombatAI_Settings_Basic_Presets = "CombatAI.Settings.Basic.Presets".Translate();
         }             
                       
+        private static TaggedString _CombatAI_Settings_Basic_RandomizedSettings = null;
+        /// <summary> Keyed string. key=<c>CombatAI.Settings.Basic.RandomizedSettings</c>. inner text:
+        ///
+        /// <code>Dynamic Settings</code>
+        /// </summary>       
+        public static TaggedString CombatAI_Settings_Basic_RandomizedSettings {
+            get => _CombatAI_Settings_Basic_RandomizedSettings != null ? 
+                   _CombatAI_Settings_Basic_RandomizedSettings : _CombatAI_Settings_Basic_RandomizedSettings = "CombatAI.Settings.Basic.RandomizedSettings".Translate();
+        }             
+                      
+        private static TaggedString _CombatAI_Settings_Basic_RandomizedSettings_Description = null;
+        /// <summary> Keyed string. key=<c>CombatAI.Settings.Basic.RandomizedSettings.Description</c>. inner text:
+        ///
+        /// <code>Dynamic Settings changes the mod settings randomly overtime. This is used to make every raid feel different.</code>
+        /// </summary>       
+        public static TaggedString CombatAI_Settings_Basic_RandomizedSettings_Description {
+            get => _CombatAI_Settings_Basic_RandomizedSettings_Description != null ? 
+                   _CombatAI_Settings_Basic_RandomizedSettings_Description : _CombatAI_Settings_Basic_RandomizedSettings_Description = "CombatAI.Settings.Basic.RandomizedSettings.Description".Translate();
+        }             
+                      
         private static TaggedString _CombatAI_Settings_Basic_Presets_Easy = null;
         /// <summary> Keyed string. key=<c>CombatAI.Settings.Basic.Presets.Easy</c>. inner text:
         ///
@@ -612,6 +632,16 @@ namespace CombatAI.R
                    _CombatAI_Settings_Basic_Caster : _CombatAI_Settings_Basic_Caster = "CombatAI.Settings.Basic.Caster".Translate();
         }             
                       
+        private static TaggedString _CombatAI_Settings_Basic_FoodWealth = null;
+        /// <summary> Keyed string. key=<c>CombatAI.Settings.Basic.FoodWealth</c>. inner text:
+        ///
+        /// <code>Exclude food from wealth calculation</code>
+        /// </summary>       
+        public static TaggedString CombatAI_Settings_Basic_FoodWealth {
+            get => _CombatAI_Settings_Basic_FoodWealth != null ? 
+                   _CombatAI_Settings_Basic_FoodWealth : _CombatAI_Settings_Basic_FoodWealth = "CombatAI.Settings.Basic.FoodWealth".Translate();
+        }             
+                      
         private static TaggedString _CombatAI_Settings_Basic_Targeter = null;
         /// <summary> Keyed string. key=<c>CombatAI.Settings.Basic.Targeter</c>. inner text:
         ///
@@ -780,6 +810,26 @@ namespace CombatAI.R
         public static TaggedString CombatAI_Settings_Advance_Sight_Performance_Description {
             get => _CombatAI_Settings_Advance_Sight_Performance_Description != null ? 
                    _CombatAI_Settings_Advance_Sight_Performance_Description : _CombatAI_Settings_Advance_Sight_Performance_Description = "CombatAI.Settings.Advance.Sight.Performance.Description".Translate();
+        }             
+                      
+        private static TaggedString _CombatAI_Settings_Advance_Sight_Performance_Threads = null;
+        /// <summary> Keyed string. key=<c>CombatAI.Settings.Advance.Sight.Performance.Threads</c>. inner text:
+        ///
+        /// <code>Number of processing threads</code>
+        /// </summary>       
+        public static TaggedString CombatAI_Settings_Advance_Sight_Performance_Threads {
+            get => _CombatAI_Settings_Advance_Sight_Performance_Threads != null ? 
+                   _CombatAI_Settings_Advance_Sight_Performance_Threads : _CombatAI_Settings_Advance_Sight_Performance_Threads = "CombatAI.Settings.Advance.Sight.Performance.Threads".Translate();
+        }             
+                      
+        private static TaggedString _CombatAI_Settings_Advance_Sight_Performance_Threads_Number = null;
+        /// <summary> Keyed string. key=<c>CombatAI.Settings.Advance.Sight.Performance.Threads.Number</c>. inner text:
+        ///
+        /// <code>{0} threads</code>
+        /// </summary>       
+        public static TaggedString CombatAI_Settings_Advance_Sight_Performance_Threads_Number {
+            get => _CombatAI_Settings_Advance_Sight_Performance_Threads_Number != null ? 
+                   _CombatAI_Settings_Advance_Sight_Performance_Threads_Number : _CombatAI_Settings_Advance_Sight_Performance_Threads_Number = "CombatAI.Settings.Advance.Sight.Performance.Threads.Number".Translate();
         }             
                       
         private static TaggedString _CombatAI_Settings_Advance_Sight_Performance_FrienldiesAndEnemies = null;

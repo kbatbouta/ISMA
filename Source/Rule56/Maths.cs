@@ -30,7 +30,11 @@ namespace CombatAI
         {
             return first.Position.DistanceTo_Fast(second.Position);
         }
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IntVec3 Round(this Vector3 vector)
+        {
+	        return new IntVec3(Mathf.RoundToInt(vector.x), Mathf.RoundToInt(vector.y), Mathf.RoundToInt(vector.z));
+        }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Max(float a, float b)
         {

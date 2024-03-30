@@ -26,6 +26,8 @@
     <CombatAI.Settings.Basic>Basic Settings</CombatAI.Settings.Basic>
     <CombatAI.Settings.Basic.RandomizedPersonality>Enable variation in faction tactics depending on the faction leader and the current time of year</CombatAI.Settings.Basic.RandomizedPersonality>
     <CombatAI.Settings.Basic.Presets>Performance/Difficulty presets</CombatAI.Settings.Basic.Presets>
+    <CombatAI.Settings.Basic.RandomizedSettings>Dynamic Settings</CombatAI.Settings.Basic.RandomizedSettings>
+    <CombatAI.Settings.Basic.RandomizedSettings.Description>Dynamic Settings changes the mod settings randomly overtime. This is used to make every raid feel different.</CombatAI.Settings.Basic.RandomizedSettings.Description>
     <CombatAI.Settings.Basic.Presets.Easy>Easy/Perf</CombatAI.Settings.Basic.Presets.Easy>
     <CombatAI.Settings.Basic.Presets.Normal>Normal</CombatAI.Settings.Basic.Presets.Normal>
     <CombatAI.Settings.Basic.Presets.Hard>Hard</CombatAI.Settings.Basic.Presets.Hard>
@@ -59,6 +61,7 @@
     <CombatAI.Settings.Basic.PerformanceOpt.Warning>WARNING: NOT having dynamic performance settings ON will result in lag spikes and lose of performance!</CombatAI.Settings.Basic.PerformanceOpt.Warning>
     <CombatAI.Settings.Basic.PerformanceOpt.Description>Automatically adjust settings to maintain both a good level of TPS and a good AI.</CombatAI.Settings.Basic.PerformanceOpt.Description>
     <CombatAI.Settings.Basic.Caster>Enable fire position tweaks</CombatAI.Settings.Basic.Caster>
+    <CombatAI.Settings.Basic.FoodWealth>Exclude food from wealth calculation</CombatAI.Settings.Basic.FoodWealth>
     <CombatAI.Settings.Basic.Targeter>Enable target selection tweaks</CombatAI.Settings.Basic.Targeter>
     <CombatAI.Settings.Basic.Flanking>Enable aggressive flanking</CombatAI.Settings.Basic.Flanking>
     <CombatAI.Settings.Basic.Reaction>Enable fast reactions</CombatAI.Settings.Basic.Reaction>
@@ -76,6 +79,8 @@
     <CombatAI.Settings.Advance.Enable>I'm an advanced user!</CombatAI.Settings.Advance.Enable>
     <CombatAI.Settings.Advance.Sight.Performance>Performance</CombatAI.Settings.Advance.Sight.Performance>
     <CombatAI.Settings.Advance.Sight.Performance.Description>You can adjust how many buckets pawns/turrets are divided into and how often they updates. Warning: DON'T USE THIS IF YOU DON'T KNOW WHAT YOU'RE DOING</CombatAI.Settings.Advance.Sight.Performance.Description>
+    <CombatAI.Settings.Advance.Sight.Performance.Threads>Number of processing threads</CombatAI.Settings.Advance.Sight.Performance.Threads>
+    <CombatAI.Settings.Advance.Sight.Performance.Threads.Number>{0} threads</CombatAI.Settings.Advance.Sight.Performance.Threads.Number>
     <CombatAI.Settings.Advance.Sight.Performance.FrienldiesAndEnemies>Humanlike factions</CombatAI.Settings.Advance.Sight.Performance.FrienldiesAndEnemies>
     <CombatAI.Settings.Advance.Sight.Performance.MechsAndInsect>Mechs and insects</CombatAI.Settings.Advance.Sight.Performance.MechsAndInsect>
     <CombatAI.Settings.Advance.Sight.Performance.WildLife>Wildlife</CombatAI.Settings.Advance.Sight.Performance.WildLife>

@@ -210,11 +210,12 @@ namespace CombatAI.Comps
 				aggroTicks -= GenTicks.TickRareInterval;
 				if (aggroTicks <= 0)
 				{
-					if (aggroTarget.IsValid)
+					if (aggroTarget is { IsValid: true, HasThing: true } && aggroTarget.Thing.Spawned && (aggroTarget.Thing is not Pawn enemy || !(enemy.Downed || enemy.Dead)))
 					{
 						TryAggro(aggroTarget, 0.8f, Rand.Int);
 					}
 					aggroTarget = LocalTargetInfo.Invalid;
+					aggroTicks  = (int) 240;
 				}
 
 			}
@@ -229,7 +230,7 @@ namespace CombatAI.Comps
 			if (selPawn.IsApproachingMeleeTarget(out Thing target))
 			{
 				ThingComp_CombatAI comp = target.GetComp_Fast<ThingComp_CombatAI>();
-				;
+				
 				if (comp != null)
 				{
 					comp.Notify_BeingTargeted(selPawn, selPawn.CurrentEffectiveVerb);
@@ -430,8 +431,8 @@ namespace CombatAI.Comps
 				data.LastInterrupted = GenTicks.TicksGame + Rand.Int % 240;
 				return;
 			}
-			PersonalityTacker.PersonalityResult personality      = parent.GetCombatPersonality();
-			IntVec3                             selPos           = selPawn.Position;
+			PersonalityTacker.PersonalityResult personality = parent.GetCombatPersonality();
+			IntVec3                             selPos      = selPawn.Position;
 			// used to update nearest enemy THing
 			// For debugging and logging.
 			progress = 7;
@@ -1648,10 +1649,10 @@ namespace CombatAI.Comps
 				Job                                 job         = null;
 				float                               miningSkill = selPawn.GetSkillLevelSafe(SkillDefOf.Mining, 0);
 				PersonalityTacker.PersonalityResult personality = parent.GetCombatPersonality();
-				if (findEscorts && Rand.Chance(1 - Maths.Min(escorts.Count / (Maths.Max(miningSkill, 7) * personality.sapping), 0.85f)))
+				if (findEscorts && Rand.Chance(personality.sapping - Maths.Min(escorts.Count  / (Maths.Max(miningSkill, 7)), 0.85f)))
 				{
 					int     count       = escorts.Count;
-					int     countTarget = 7 + Mathf.FloorToInt(Maths.Max(miningSkill, 7) * personality.sapping) + Maths.Min(sapperNodes.Count, 10);
+					int     countTarget = 7 + Mathf.FloorToInt(Maths.Max(miningSkill, 7)) + Maths.Min(sapperNodes.Count, 10);
 					Faction faction     = selPawn.Faction;
 					Predicate<Thing> validator = t =>
 					{
@@ -1660,9 +1661,9 @@ namespace CombatAI.Comps
 						    && ally.GetSkillLevelSafe(SkillDefOf.Mining, 0) < miningSkill)
 						{
 							ThingComp_CombatAI comp = ally.AI();
-							if (comp?.duties != null && comp.duties?.Any(CombatAI_DutyDefOf.CombatAI_Escort) == false && !comp.IsSapping && GenTicks.TicksGame - comp.releasedTick > 600)
+							if (comp?.duties != null && comp.duties?.Any(CombatAI_DutyDefOf.CombatAI_Escort) == false && !comp.IsSapping && GenTicks.TicksGame - comp.releasedTick > 300)
 							{
-								Pawn_CustomDutyTracker.CustomPawnDuty custom = CustomDutyUtility.Escort(selPawn, 20, 100, 600 + Mathf.CeilToInt(12 * selPawn.Position.DistanceTo(cellBefore)) + 540 * sapperNodes.Count + Rand.Int % 600);
+								Pawn_CustomDutyTracker.CustomPawnDuty custom = CustomDutyUtility.Escort(selPawn, 20, 100, (int)(personality.sapping * 4800) + Mathf.CeilToInt(12 * selPawn.Position.DistanceTo(cellBefore)) + 540 * sapperNodes.Count + Rand.Int % 600);
 								if (ally.TryStartCustomDuty(custom))
 								{
 									escorts.Add(ally);
