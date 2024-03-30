@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <JobDef>
+        <defName>CombatAI_Goto_Retreat</defName>
+        <driverClass>JobDriver_Goto</driverClass>
+        <reportString>retreating.</reportString>
+        <allowOpportunisticPrefix>false</allowOpportunisticPrefix>
+        <carryThingAfterJob>true</carryThingAfterJob>
+        <dropThingBeforeJob>false</dropThingBeforeJob>
+        <casualInterruptible>false</casualInterruptible>
+        <neverFleeFromEnemies>true</neverFleeFromEnemies>
+    </JobDef>
+
+    <JobDef>
+        <defName>CombatAI_Goto_Duck</defName>
+        <driverClass>JobDriver_Goto</driverClass>
+        <reportString>moving.</reportString>
+        <allowOpportunisticPrefix>false</allowOpportunisticPrefix>
+        <carryThingAfterJob>true</carryThingAfterJob>
+        <dropThingBeforeJob>false</dropThingBeforeJob>
+        <checkOverrideOnDamage>Never</checkOverrideOnDamage>
+        <casualInterruptible>false</casualInterruptible>
+        <neverFleeFromEnemies>true</neverFleeFromEnemies>
+    </JobDef>
+
+    <JobDef>
+        <defName>CombatAI_Goto_Cover</defName>
+        <driverClass>JobDriver_Goto</driverClass>
+        <reportString>moving.</reportString>
+        <allowOpportunisticPrefix>false</allowOpportunisticPrefix>
+        <carryThingAfterJob>true</carryThingAfterJob>
+        <dropThingBeforeJob>false</dropThingBeforeJob>
+        <checkOverrideOnDamage>Never</checkOverrideOnDamage>
+        <casualInterruptible>false</casualInterruptible>
+        <neverFleeFromEnemies>true</neverFleeFromEnemies>
+    </JobDef>
+</Defs>

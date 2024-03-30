@@ -287,12 +287,11 @@ namespace CombatAI.Patches
                 {
                     if (!finished1)
                     {
-                        if (codes[i].opcode == OpCodes.Stloc_S && codes[i].operand is LocalBuilder builder1 && builder1.LocalIndex == 48)
+                        if (codes[i].opcode == OpCodes.Stloc_S && codes[i].operand is LocalBuilder builder1 && builder1.LocalIndex == 46)
                         {
                             finished1 = true;
-                            yield return new CodeInstruction(OpCodes.Ldloc_S, 45).MoveLabelsFrom(codes[i]).MoveBlocksFrom(codes[i]); // index of cell around curIndex
+                            yield return new CodeInstruction(OpCodes.Ldloc_S, 43).MoveLabelsFrom(codes[i]).MoveBlocksFrom(codes[i]); // index of cell around curIndex
                             yield return new CodeInstruction(OpCodes.Ldloc_S, 3); // curIndex
-                            yield return new CodeInstruction(OpCodes.Ldloc_S, 15); // open cell num (after enqueue)
                             yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(PathFinder_FindPath_Patch), nameof(GetCostOffsetAt)));
                             yield return new CodeInstruction(OpCodes.Add);
                         }
@@ -301,7 +300,7 @@ namespace CombatAI.Patches
                 }
             }
 
-            private static int GetCostOffsetAt(int index, int parentIndex, int openNum)
+            private static float GetCostOffsetAt(int index, int parentIndex)
             {
                 if (FlashSearch && map != null && !fallbackCall)
 				{

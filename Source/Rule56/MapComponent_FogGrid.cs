@@ -305,8 +305,7 @@ namespace CombatAI
 				WallGrid    walls        = comp.walls;
 				IntVec3     pos          = this.pos.ToIntVec3();
 				IntVec3     loc;
-
-				ColorInt[] glowGrid = comp.glow.glowGrid;
+				
 				float      glowSky  = comp.SkyGlow;
 				bool       changed  = false;
 
@@ -340,7 +339,7 @@ namespace CombatAI
 						visibility = Maths.Max(visibilityAdj / 9, visibility) + visibilityOffset;
 						if (glowSky < 1)
 						{
-							ColorInt glow = glowGrid[index];
+							Color32 glow = comp.glow.GetAccumulatedGlowAt(index);
 							visRLimit = Mathf.Lerp(0, 0.5f, 1 - (Maths.Max(!isWall ? 1f : Mathf.Clamp01(Maths.Max(glow.r, glow.g, glow.b) / 255f * 3.6f), glowSky) + glowOffset));
 						}
 						float val = Maths.Max(1 - visibility, 0);

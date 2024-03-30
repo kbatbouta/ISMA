@@ -23,7 +23,7 @@ namespace CombatAI
             queue.Enqueue(new Node
             {
                 region = rootRegion,
-                score  = targetIsValid ? Maths.Sqrt_Fast(target.DistanceToSquared(rootRegion.extentsClose.TopRight), 3) : 0,
+                score  = targetIsValid ? Maths.Sqrt_Fast(target.DistanceToSquared(rootRegion.extentsClose.Max), 3) : 0,
             });
             flooded.Clear();
             flooded.Add(rootRegion.id);
@@ -50,7 +50,7 @@ namespace CombatAI
                             {
                                 if (targetIsValid)
                                 {
-                                    float distToTarget = Maths.Sqrt_Fast(target.DistanceToSquared(next.extentsClose.TopRight), 3);
+                                    float distToTarget = Maths.Sqrt_Fast(target.DistanceToSquared(next.extentsClose.Max), 3);
                                     if (distToTarget < maxDist)
                                     {
                                         queue.Enqueue(new Node

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+    <!-- <Operation Class="PatchOperationReplace">
+        <xpath>Defs/DutyDef/thinkNode/subNodes/li[@Class="JobGiver_TakeCombatEnhancingDrug"]</xpath>
+        <value>
+            <li Class="CombatAI.ThinkNode_ConditionalSight">
+                <visibilityToEnemies>1</visibilityToEnemies>
+                <subNodes>
+                    <li Class="JobGiver_TakeCombatEnhancingDrug">
+                        <onlyIfInDanger>true</onlyIfInDanger>
+                    </li>
+                </subNodes>
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationInsert">
+        <xpath>Defs/DutyDef/thinkNode/subNodes/li[@Class="JobGiver_AIGotoNearestHostile"]</xpath>
+        <value>
+            <li Class="CombatAI.ThinkNode_ConditionalHumanlike">                   
+                <subNodes>
+                    <li Class="CombatAI.ThinkNode_ConditionalRaider">           
+                        <subNodes>
+                            <li Class="CombatAI.ThinkNode_Timed">
+                                <interval>240</interval>
+                                <subNodes>                          
+                                    <li Class="JobGiver_PickUpOpportunisticWeapon" />
+                                </subNodes>
+                            </li>
+                        </subNodes>
+                    </li>
+                </subNodes>
+            </li>
+        </value>
+    </Operation> -->
+
+</Patch>

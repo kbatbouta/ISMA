@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <CombatAI.Gui.HyperTextDef>
+        <defName>CombatAI_DevJobTutorial1</defName>
+        <content>
+            <!-- isma logo -->
+            <img path='Isma/logo'
+                 height='350'/>
+            <gap height='10'/>
+            <p fontSize='Medium'
+               textAnchor='UpperLeft'>Thank you for participating in [color=green]CAI-5000[/color] open test
+            </p>
+            <gap height='10'/>
+            <p fontSize='Smaller'>In this tutorial you will learn how create bug reports for [color=green]CAI-5000[/color]</p>
+            <gap height='5'/>
+            <p fontSize='Tiny'>[color='yellow']NOTE:[/color] This is a test build thus it's significantly slower and will consume a lot more memory</p>
+        </content>
+    </CombatAI.Gui.HyperTextDef>
+
+    <CombatAI.Gui.HyperTextDef>
+        <defName>CombatAI_DevJobTutorial2</defName>
+        <content>
+            <p fontSize='Medium'>Job Logs and Troubleshooting Pawns</p>
+            <gap height="5"/>
+            <p fontSize="Smaller">The [color='green']job log[/color] is used to troubleshoot pawns doing something they [color=red]shouldn't[/color] be doing.</p>
+            <gap height="5"/>
+            <p>You can access a pawn's job log by:</p>
+            <gap height="5"
+                 fontSize="Smaller"/>
+            <p fontSize="Smaller">1. Select the problematic pawn</p>
+            <p fontSize="Smaller">2. Click on the [color='yellow']"DEV: View job logs"[/color] gizmo button. The button is showen in screenshot (1). The window in screenshot (2) should appear</p>
+            <gap height="5"
+                 fontSize="Smaller"/>
+            <p fontSize="Tiny">[color=yellow]WARNING:[/color]If you select a different pawn while the window is open the window will automatically switch to viewing their job log.</p>
+            <img path="Isma/Tutorials/JobLog/gizmo_screenshot"
+                 height="180"/>
+            <p fontSize="tiny"
+               textAnchor="MiddleCenter">Screenshot (1): The job log gizmo button
+            </p>
+            <gap height="10"/>
+            <img path="Isma/Tutorials/JobLog/window_screenshot"
+                 height="180"/>
+            <p fontSize="tiny"
+               textAnchor="MiddleCenter">Screenshot (2): The job log window
+            </p>
+            <gap height="10"/>
+            <p fontSize="Tiny">[color=yellow]WARNING:[/color]If you select a different pawn while the window is open the window will automatically switch to viewing their job log.</p>
+        </content>
+    </CombatAI.Gui.HyperTextDef>
+
+    <CombatAI.Gui.HyperTextDef>
+        <defName>CombatAI_DevJobTutorial3</defName>
+        <content>
+            <p fontSize='Medium'>Creating an initial report</p>
+            <gap height="5"/>
+            <p fontSize="Smaller">1. [color=yellow]Unpause[/color] the game after opening the job log window for a second or 2 incase the job log is empty.</p>
+            <p fontSize="Smaller">2. Click on the [color=green]Copy short report to clipboard[/color] button in the top right corner. The green button shown in screenshot (3)</p>
+            <p fontSize="Smaller">3. Join the RocketMan discord server https://discord.gg/ftCjYB7jDe and post the report in the [color=yellow]#combat-ai-feedback channel[/color]</p>
+            <img path="Isma/Tutorials/JobLog/clipboard_screenshot"
+                 height="180"/>
+            <p fontSize="tiny"
+               textAnchor="MiddleCenter">Screenshot (3): Copy short report to clipboard in the top right corner of the job log window.
+            </p>
+        </content>
+    </CombatAI.Gui.HyperTextDef>
+
+    <CombatAI.Gui.HyperTextDef>
+        <defName>CombatAI_DevJobTutorial4</defName>
+        <content>
+            <p fontSize='Medium'>Investigating AI choices</p>
+            <p fontSize="Smaller">Sometimes you might want to investigate AI choices like a pawn choosing a really bad cover position, pawn standing still or pawn dancing around in loops.</p>
+            <gap height="5"/>
+            <p fontSize="Smaller">In the job log window, when you select a job, it'll show you information about the job. Example showen in screenshot (4)</p>
+            <img path="Isma/Tutorials/JobLog/position_screenshot"
+                 height="180"/>
+            <p fontSize="tiny"
+               textAnchor="MiddleCenter">Screenshot (4): The section showing your current selection information.
+            </p>
+            <gap height="5"/>
+            <p fontSize='Medium'>Investigating cover position</p>
+            <p fontSize="Smaller">You go about investigating what job made the pawn go to a specific location by:</p>
+            <gap height="5"/>
+            <p fontSize="Smaller">1. Select a random job at the top of the job log.</p>
+            <p fontSize="Smaller">2.1. In the information section clicking on the [color=green]"origin:"[/color] section will hightlight the cell at which the pawn made the decision.</p>
+            <p fontSize="Smaller">2.2. In the information section clicking on the [color=green]"destination:"[/color] section will hightlight the target cell the pawn choose to go to. Note that if the value shown is (-1000,-1000,-1000) then that mean the selected job didn't include moving to another cell.</p>
+            <p fontSize="Smaller">3. Repeat steps 1 and 2 until you land on a job that matches your obesrvations.</p>
+            <gap height="5"/>
+            <p fontSize="Smaller">Some tips:</p>
+            <p fontSize="Smaller">1. Jobs that involve movement start typically with the prefix "Goto" so any job with Goto in the name is a good place to start searching.</p>
+            <p fontSize="Smaller">2. If a pawn is not moving selecting jobs starting with "Wait" prefix will most likely lead to the problematic job.</p>
+        </content>
+    </CombatAI.Gui.HyperTextDef>
+</Defs>

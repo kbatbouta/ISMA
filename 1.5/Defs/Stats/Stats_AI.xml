@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+    <!-- <StatDef>
+      <defName>CombatAI_AggroMul</defName>    
+      <label>Aggressiveness multiplier</label>
+      <alwaysHide>true</alwaysHide>
+      <description>Aggressiveness multiplier.</description>    
+      <category>PawnCombat</category>
+      <displayPriorityInCategory>50</displayPriorityInCategory>
+      <defaultBaseValue>1.0</defaultBaseValue>
+      <minValue>0.0</minValue>
+      <maxValue>3.0</maxValue>
+      <toStringStyle>Integer</toStringStyle>
+      <showOnAnimals>true</showOnAnimals>   
+      <parts>
+        <li Class="StatPart_ApparelStatOffset"> 
+          <apparelStat>CombatAI_ApparelOffsetAggroMul</apparelStat>
+          <includeWeapon>true</includeWeapon>
+        </li>
+      </parts> 
+    </StatDef>
+  
+    <StatDef>
+      <defName>CombatAI_ApparelOffsetAggroMul</defName>
+      <label>Aggressiveness multiplier</label>
+      <alwaysHide>true</alwaysHide>
+      <description>Aggressiveness multiplier.</description>
+      <category>Apparel</category>
+      <displayPriorityInCategory>50</displayPriorityInCategory>
+      <defaultBaseValue>0.0</defaultBaseValue>
+      <minValue>-1.0</minValue>
+      <maxValue>1.0</maxValue>
+      <toStringStyle>Integer</toStringStyle>        
+    </StatDef> -->
+
+</Defs>

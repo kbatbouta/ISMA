@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <ResearchProjectDef>
+        <defName>TribalCCTV</defName>
+        <label>Animal Warning System</label>
+        <description>A Trained parrot in the nest.</description>
+        <baseCost>450</baseCost>
+        <techLevel>Medieval</techLevel>
+        <researchViewX>0</researchViewX>
+        <researchViewY>1</researchViewY>
+        <tab>cai5000</tab>
+    </ResearchProjectDef>
+
+    <ResearchProjectDef>
+        <defName>IndustrialCCTV</defName>
+        <label>Automated Camera System</label>
+        <description>An automated camera keep sight of an area.</description>
+        <baseCost>600</baseCost>
+        <techLevel>Industrial</techLevel>
+        <prerequisites>
+            <li>TribalCCTV</li>
+        </prerequisites>
+        <researchViewX>1</researchViewX>
+        <researchViewY>1</researchViewY>
+        <tab>cai5000</tab>
+    </ResearchProjectDef>
+
+    <ResearchProjectDef>
+        <defName>SpacerCCTV</defName>
+        <label>Advanced Light Sensor</label>
+        <description>New version of automated camera for</description>
+        <baseCost>1850</baseCost>
+        <requiredResearchBuilding>HiTechResearchBench</requiredResearchBuilding>
+        <requiredResearchFacilities>
+            <li>MultiAnalyzer</li>
+        </requiredResearchFacilities>
+        <techLevel>Spacer</techLevel>
+        <prerequisites>
+            <li>MicroelectronicsBasics</li>
+            <li>IndustrialCCTV</li>
+        </prerequisites>
+        <researchViewX>2</researchViewX>
+        <researchViewY>1</researchViewY>
+        <tab>cai5000</tab>
+    </ResearchProjectDef>
+
+</Defs>

@@ -1,0 +1,514 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <!--POLE CCTV BIRD-->
+    <ThingDef ParentName="BuildingBase">
+        <defName>CombatAI_TribalPoleCCTV</defName>
+        <label>Parrot in the cage</label>
+        <description>A parrot to keep sight of an area. Does not require power, need food to function. Does not function at night.</description>
+        <thingClass>Building</thingClass>
+        <graphicData>
+            <graphicClass>Graphic_Single</graphicClass>
+            <texPath>Isma/Buildings/CCTV/cctv_poleBird</texPath>
+            <drawSize>(1.0,1.0)</drawSize>
+            <damageData>
+                <rect>(0.38,0.2,0.56375,0.8)</rect>
+                <cornerTL>Damage/Corner</cornerTL>
+            </damageData>
+            <shadowData>
+                <offset>(-0.13,-0.87,-0.1)</offset>
+                <volume>(0.2,2.0,0.5)</volume>
+            </shadowData>
+        </graphicData>
+        <category>Building</category>
+        <tickerType>Normal</tickerType>
+        <selectable>true</selectable>
+        <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+        <repairEffect>Repair</repairEffect>
+        <leaveResourcesWhenKilled>true</leaveResourcesWhenKilled>
+        <filthLeaving>Filth_RubbleBuilding</filthLeaving>
+        <altitudeLayer>Building</altitudeLayer>
+        <passability>PassThroughOnly</passability>
+        <pathCost>90</pathCost>
+        <hasInteractionCell>False</hasInteractionCell>
+        <minifiedDef>MinifiedThing</minifiedDef>
+        <thingCategories>
+            <li>BuildingsSecurity</li>
+        </thingCategories>
+        <designationCategory>Intelligences</designationCategory>
+        <drawerType>MapMeshAndRealTime</drawerType>
+        <uiIconScale>1.2</uiIconScale>
+        <stealable>false</stealable>
+        <rotatable>false</rotatable>
+        <size>(1,1)</size>
+        <fillPercent>0.4</fillPercent>
+        <specialDisplayRadius>11</specialDisplayRadius>
+        <researchPrerequisites>
+            <li>TribalCCTV</li>
+        </researchPrerequisites>
+        <costList>
+            <WoodLog>80</WoodLog>
+        </costList>
+        <statBases>
+            <MaxHitPoints>70</MaxHitPoints>
+            <Flammability>2.0</Flammability>
+            <WorkToBuild>600</WorkToBuild>
+            <Mass>20</Mass>
+            <Beauty>-3</Beauty>
+        </statBases>
+        <placeWorkers>
+            <li>PlaceWorker_NotUnderRoof</li>
+            <li>PlaceWorker_PreventInteractionSpotOverlap</li>
+        </placeWorkers>
+        <comps>
+            <li Class="CombatAI.Comps.CompProperties_Sighter">
+                <radius>11</radius>
+                <radiusNight>1</radiusNight>
+                <powered>false</powered>
+                <mannable>false</mannable>
+            </li>
+            <li Class="CompProperties_Refuelable">
+                <fuelConsumptionRate>2</fuelConsumptionRate>
+                <fuelCapacity>10</fuelCapacity>
+                <fuelFilter>
+                    <thingDefs>
+                        <li>RawRice</li>
+                    </thingDefs>
+                </fuelFilter>
+                <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
+                <autoRefuelPercent>0.1</autoRefuelPercent>
+                <showFuelGizmo>true</showFuelGizmo>
+                <drawOutOfFuelOverlay>true</drawOutOfFuelOverlay>
+                <drawFuelGaugeInMap>false</drawFuelGaugeInMap>
+                <fuelGizmoLabel>Grain Stored(Nutrition)</fuelGizmoLabel>
+                <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
+            </li>
+        </comps>
+    </ThingDef>
+
+    <!--POLE CCTV INDUS-->
+
+    <ThingDef ParentName="BuildingBase">
+        <defName>CombatAI_IndustrialPoleCCTV</defName>
+        <label>Industrial Camera on Pole Mount</label>
+        <description>An automated camera keep sight of an area.</description>
+        <thingClass>Building</thingClass>
+        <graphicData>
+            <graphicClass>Graphic_Single</graphicClass>
+            <texPath>Isma/Buildings/CCTV/cctv_pole</texPath>
+            <drawSize>(2,3.5)</drawSize>
+            <damageData>
+                <rect>(0.38,0.2,0.56375,0.8)</rect>
+                <cornerTL>Damage/Corner</cornerTL>
+            </damageData>
+            <shadowData>
+                <offset>(-0.13,-0.87,-0.1)</offset>
+                <volume>(0.15, 2.0, 0.4)</volume>
+            </shadowData>
+        </graphicData>
+        <category>Building</category>
+        <tickerType>Normal</tickerType>
+        <selectable>true</selectable>
+        <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+        <repairEffect>Repair</repairEffect>
+        <leaveResourcesWhenKilled>true</leaveResourcesWhenKilled>
+        <filthLeaving>Filth_RubbleBuilding</filthLeaving>
+        <altitudeLayer>Building</altitudeLayer>
+        <passability>PassThroughOnly</passability>
+        <pathCost>90</pathCost>
+        <hasInteractionCell>False</hasInteractionCell>
+        <minifiedDef>MinifiedThing</minifiedDef>
+        <thingCategories>
+            <li>BuildingsSecurity</li>
+        </thingCategories>
+        <designationCategory>Intelligences</designationCategory>
+        <drawerType>MapMeshAndRealTime</drawerType>
+        <uiIconScale>1.2</uiIconScale>
+        <stealable>false</stealable>
+        <rotatable>false</rotatable>
+        <size>(1,1)</size>
+        <fillPercent>0.4</fillPercent>
+        <specialDisplayRadius>21</specialDisplayRadius>
+        <researchPrerequisites>
+            <li>IndustrialCCTV</li>
+        </researchPrerequisites>
+        <costStuffCount>60</costStuffCount>
+        <costList>
+            <ComponentIndustrial>1</ComponentIndustrial>
+        </costList>
+        <stuffCategories>
+            <li>Metallic</li>
+        </stuffCategories>
+        <statBases>
+            <MaxHitPoints>180</MaxHitPoints>
+            <Flammability>0.5</Flammability>
+            <WorkToBuild>1200</WorkToBuild>
+            <Mass>15</Mass>
+            <Beauty>-5</Beauty>
+        </statBases>
+        <placeWorkers>
+            <li>PlaceWorker_NotUnderRoof</li>
+            <li>PlaceWorker_PreventInteractionSpotOverlap</li>
+        </placeWorkers>
+        <comps>
+            <li Class="CombatAI.Comps.CompProperties_Sighter">
+                <radius>21</radius>
+                <radiusNight>11</radiusNight>
+                <powered>true</powered>
+                <mannable>false</mannable>
+            </li>
+            <li Class="CompProperties_Forbiddable"/>
+            <li Class="CompProperties_Power">
+                <compClass>CompPowerTrader</compClass>
+                <basePowerConsumption>110</basePowerConsumption>
+            </li>
+            <li Class="CompProperties_Flickable"/>
+            <li Class="CompProperties_Breakdownable"/>
+        </comps>
+    </ThingDef>
+
+    <!--POLE CCTV SPACER-->
+
+    <ThingDef ParentName="BuildingBase">
+        <defName>CombatAI_SpacerPoleCCTV</defName>
+        <label>Spacer Camera on Pole Mount</label>
+        <description>An advanced automated camera keep sight of an area.Higher vision range than industrial version and with nightvision optic for night time.</description>
+        <thingClass>Building</thingClass>
+        <graphicData>
+            <graphicClass>Graphic_Single</graphicClass>
+            <texPath>Isma/Buildings/CCTV/cctv_poleADV</texPath>
+            <drawSize>(2,3.5)</drawSize>
+            <damageData>
+                <rect>(0.38,0.2,0.56375,0.8)</rect>
+                <cornerTL>Damage/Corner</cornerTL>
+            </damageData>
+            <shadowData>
+                <offset>(-0.13,-0.87,-0.1)</offset>
+                <volume>(0.15, 2.0, 0.4)</volume>
+            </shadowData>
+        </graphicData>
+        <category>Building</category>
+        <tickerType>Normal</tickerType>
+        <selectable>true</selectable>
+        <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+        <repairEffect>Repair</repairEffect>
+        <leaveResourcesWhenKilled>true</leaveResourcesWhenKilled>
+        <filthLeaving>Filth_RubbleBuilding</filthLeaving>
+        <altitudeLayer>Building</altitudeLayer>
+        <passability>PassThroughOnly</passability>
+        <pathCost>90</pathCost>
+        <hasInteractionCell>False</hasInteractionCell>
+        <minifiedDef>MinifiedThing</minifiedDef>
+        <thingCategories>
+            <li>BuildingsSecurity</li>
+        </thingCategories>
+        <designationCategory>Intelligences</designationCategory>
+        <drawerType>MapMeshAndRealTime</drawerType>
+        <uiIconScale>1.2</uiIconScale>
+        <stealable>false</stealable>
+        <rotatable>false</rotatable>
+        <size>(1,1)</size>
+        <fillPercent>0.4</fillPercent>
+        <specialDisplayRadius>29</specialDisplayRadius>
+        <researchPrerequisites>
+            <li>SpacerCCTV</li>
+        </researchPrerequisites>
+        <costStuffCount>130</costStuffCount>
+        <costList>
+            <ComponentIndustrial>4</ComponentIndustrial>
+        </costList>
+        <stuffCategories>
+            <li>Metallic</li>
+        </stuffCategories>
+        <statBases>
+            <MaxHitPoints>300</MaxHitPoints>
+            <Flammability>0.2</Flammability>
+            <WorkToBuild>1900</WorkToBuild>
+            <Mass>18</Mass>
+            <Beauty>-2</Beauty>
+        </statBases>
+        <placeWorkers>
+            <li>PlaceWorker_NotUnderRoof</li>
+            <li>PlaceWorker_PreventInteractionSpotOverlap</li>
+        </placeWorkers>
+        <comps>
+            <li Class="CombatAI.Comps.CompProperties_Sighter">
+                <radius>29</radius>
+                <radiusNight>26</radiusNight>
+                <powered>true</powered>
+                <mannable>false</mannable>
+            </li>
+            <li Class="CompProperties_Forbiddable"/>
+            <li Class="CompProperties_Power">
+                <compClass>CompPowerTrader</compClass>
+                <basePowerConsumption>180</basePowerConsumption>
+            </li>
+            <li Class="CompProperties_Flickable"/>
+            <li Class="CompProperties_Breakdownable"/>
+            <li Class="CompProperties_Glower">
+                <glowRadius>2</glowRadius>
+                <glowColor>(281,281,80,0)</glowColor>
+            </li>
+        </comps>
+    </ThingDef>
+
+    <!--SWIVEL CCTV INDUS-->
+
+    <ThingDef ParentName="BuildingBase">
+        <defName>CombatAI_CCTVTurretIndustrial</defName>
+        <label>Industrial Wall Mounted CCTV</label>
+        <description>Wall mounted automated camera. Only provided conal field of vision, swivel around at fixed speed. Has more vision range than Pole Mount version.</description>
+        <thingClass>Building</thingClass>
+        <graphicData>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <texPath>Isma/Buildings/CCTV/cctv_wall_base</texPath>
+            <drawSize>(1.7,1.7)</drawSize>
+            <damageData>
+                <rect>(0.38,0.2,0.56375,0.8)</rect>
+                <cornerTL>Damage/Corner</cornerTL>
+            </damageData>
+        </graphicData>
+        <uiIconScale>1.6</uiIconScale>
+        <uiIconPath>Isma/Buildings/CCTV/cctvicon</uiIconPath>
+        <building>
+            <isEdifice>false</isEdifice>
+            <canPlaceOverWall>true</canPlaceOverWall>
+        </building>
+        <category>Building</category>
+        <tickerType>Normal</tickerType>
+        <selectable>true</selectable>
+        <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+        <repairEffect>Repair</repairEffect>
+        <leaveResourcesWhenKilled>true</leaveResourcesWhenKilled>
+        <filthLeaving>Filth_RubbleBuilding</filthLeaving>
+        <altitudeLayer>BuildingOnTop</altitudeLayer>
+        <passability>PassThroughOnly</passability>
+        <pathCost>90</pathCost>
+        <hasInteractionCell>False</hasInteractionCell>
+        <minifiedDef>MinifiedThing</minifiedDef>
+        <thingCategories>
+            <li>BuildingsSecurity</li>
+        </thingCategories>
+        <designationCategory>Intelligences</designationCategory>
+        <drawerType>MapMeshAndRealTime</drawerType>
+        <stealable>false</stealable>
+        <rotatable>true</rotatable>
+        <size>(1,1)</size>
+        <fillPercent>0.4</fillPercent>
+        <specialDisplayRadius>38.9</specialDisplayRadius>
+        <researchPrerequisites>
+            <li>SpacerCCTV</li>
+        </researchPrerequisites>
+        <costStuffCount>130</costStuffCount>
+        <costList>
+            <ComponentIndustrial>4</ComponentIndustrial>
+        </costList>
+        <stuffCategories>
+            <li>Metallic</li>
+        </stuffCategories>
+        <statBases>
+            <MaxHitPoints>300</MaxHitPoints>
+            <Flammability>0.2</Flammability>
+            <WorkToBuild>1900</WorkToBuild>
+            <Mass>20</Mass>
+            <Beauty>-2</Beauty>
+        </statBases>
+        <placeWorkers>
+            <li>PlaceWorker_NotUnderRoof</li>
+            <li>PlaceWorker_PreventInteractionSpotOverlap</li>
+            <li>CombatAI.PlaceWorker_WallCCTV</li>
+        </placeWorkers>
+        <comps>
+            <li Class="CombatAI.Comps.CompProperties_CCTVTop">
+                <wallMounted>true</wallMounted>
+                <radius>36</radius>
+                <radiusNight>23</radiusNight>
+                <powered>true</powered>
+                <fieldOfView>65</fieldOfView>
+                <animator>CombatAI.CCTVTopAnimator_Controlled</animator>
+                <graphicData>
+                    <graphicClass>Graphic_Single</graphicClass>
+                    <texPath>Isma/Buildings/CCTV/cctv_wall_turret</texPath>
+                    <drawSize>(2.2, 2.2)</drawSize>
+                </graphicData>
+            </li>
+            <li Class="CompProperties_Forbiddable"/>
+            <li Class="CompProperties_Power">
+                <compClass>CompPowerTrader</compClass>
+                <basePowerConsumption>125</basePowerConsumption>
+            </li>
+            <li Class="CompProperties_Flickable"/>
+            <li Class="CompProperties_Breakdownable"/>
+        </comps>
+    </ThingDef>
+
+    <!--SWIVEL CCTV SPACER-->
+
+    <ThingDef ParentName="BuildingBase">
+        <defName>CombatAI_CCTVTurretSpacer</defName>
+        <label>Spacer Wall Mounted CCTV</label>
+        <description>Wall mounted automated camera. Only provided conal field of vision, swivel around at fixed speed. Has more vision range than Pole Mount version. Higher vision range than industrial version and with nightvision optic for night time.</description>
+        <thingClass>Building</thingClass>
+        <graphicData>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <texPath>Isma/Buildings/CCTV/cctv_wall_base</texPath>
+            <drawSize>(1.7,1.7)</drawSize>
+            <damageData>
+                <rect>(0.38,0.2,0.56375,0.8)</rect>
+                <cornerTL>Damage/Corner</cornerTL>
+            </damageData>
+        </graphicData>
+        <uiIconScale>1.6</uiIconScale>
+        <uiIconPath>Isma/Buildings/CCTV/cctvicon</uiIconPath>
+        <building>
+            <isEdifice>false</isEdifice>
+            <canPlaceOverWall>true</canPlaceOverWall>
+        </building>
+        <category>Building</category>
+        <tickerType>Normal</tickerType>
+        <selectable>true</selectable>
+        <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+        <repairEffect>Repair</repairEffect>
+        <leaveResourcesWhenKilled>true</leaveResourcesWhenKilled>
+        <filthLeaving>Filth_RubbleBuilding</filthLeaving>
+        <altitudeLayer>BuildingOnTop</altitudeLayer>
+        <passability>PassThroughOnly</passability>
+        <pathCost>90</pathCost>
+        <hasInteractionCell>False</hasInteractionCell>
+        <minifiedDef>MinifiedThing</minifiedDef>
+        <thingCategories>
+            <li>BuildingsSecurity</li>
+        </thingCategories>
+        <designationCategory>Intelligences</designationCategory>
+        <drawerType>MapMeshAndRealTime</drawerType>
+        <stealable>false</stealable>
+        <rotatable>true</rotatable>
+        <size>(1,1)</size>
+        <fillPercent>0.4</fillPercent>
+        <specialDisplayRadius>49</specialDisplayRadius>
+        <researchPrerequisites>
+            <li>SpacerCCTV</li>
+        </researchPrerequisites>
+        <costStuffCount>150</costStuffCount>
+        <costList>
+            <ComponentIndustrial>6</ComponentIndustrial>
+        </costList>
+        <stuffCategories>
+            <li>Metallic</li>
+        </stuffCategories>
+        <statBases>
+            <MaxHitPoints>280</MaxHitPoints>
+            <Flammability>0.1</Flammability>
+            <WorkToBuild>2200</WorkToBuild>
+            <Mass>2</Mass>
+            <Beauty>-3</Beauty>
+        </statBases>
+        <placeWorkers>
+            <li>PlaceWorker_PreventInteractionSpotOverlap</li>
+            <li>CombatAI.PlaceWorker_WallCCTV</li>
+        </placeWorkers>
+        <comps>
+            <li Class="CombatAI.Comps.CompProperties_CCTVTop">
+                <wallMounted>true</wallMounted>
+                <radius>49</radius>
+                <radiusNight>41</radiusNight>
+                <powered>true</powered>
+                <fieldOfView>70</fieldOfView>
+                <animator>CombatAI.CCTVTopAnimator_Controlled</animator>
+                <graphicData>
+                    <graphicClass>Graphic_Single</graphicClass>
+                    <texPath>Isma/Buildings/CCTV/cctv_wall_turret</texPath>
+                    <drawSize>(2.2, 2.2)</drawSize>
+                </graphicData>
+            </li>
+            <li Class="CompProperties_Forbiddable"/>
+            <li Class="CompProperties_Power">
+                <compClass>CompPowerTrader</compClass>
+                <basePowerConsumption>245</basePowerConsumption>
+            </li>
+            <li Class="CompProperties_Flickable"/>
+            <li Class="CompProperties_Breakdownable"/>
+            <li Class="CompProperties_Glower">
+                <glowRadius>2</glowRadius>
+                <glowColor>(281,281,80,0)</glowColor>
+            </li>
+        </comps>
+    </ThingDef>
+
+    <!--INDOOR CCTV-->
+
+    <ThingDef ParentName="BuildingBase">
+        <defName>CombatAI_IndoorCCTV</defName>
+        <label>Indoor Automated Camera</label>
+        <description>Omnidirectional Camera, meant to be used indoor. Short range and consume minimal power. Will never breakdown like its outdoor counterpart, but will shortcircuit in rain.</description>
+        <thingClass>Building</thingClass>
+        <graphicData>
+            <graphicClass>Graphic_Single</graphicClass>
+            <texPath>Isma/Buildings/CCTV/cctv_sentinel</texPath>
+            <drawSize>(1.0,1.0)</drawSize>
+            <damageData>
+                <rect>(0.38,0.2,0.56375,0.8)</rect>
+                <cornerTL>Damage/Corner</cornerTL>
+            </damageData>
+        </graphicData>
+        <uiIconScale>1.5</uiIconScale>
+        <uiIconOffset>(0,0)</uiIconOffset>
+        <category>Building</category>
+        <tickerType>Normal</tickerType>
+        <selectable>true</selectable>
+        <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+        <repairEffect>Repair</repairEffect>
+        <leaveResourcesWhenKilled>true</leaveResourcesWhenKilled>
+        <filthLeaving>Filth_RubbleBuilding</filthLeaving>
+        <altitudeLayer>Building</altitudeLayer>
+        <passability>Standable</passability>
+        <pathCost>90</pathCost>
+        <hasInteractionCell>False</hasInteractionCell>
+        <minifiedDef>MinifiedThing</minifiedDef>
+        <thingCategories>
+            <li>BuildingsSecurity</li>
+        </thingCategories>
+        <designationCategory>Intelligences</designationCategory>
+        <drawerType>MapMeshAndRealTime</drawerType>
+        <stealable>false</stealable>
+        <rotatable>false</rotatable>
+        <size>(1,1)</size>
+        <fillPercent>0.4</fillPercent>
+        <specialDisplayRadius>7.9</specialDisplayRadius>
+        <researchPrerequisites>
+            <li>IndustrialCCTV</li>
+        </researchPrerequisites>
+        <costStuffCount>25</costStuffCount>
+        <costList>
+            <ComponentIndustrial>1</ComponentIndustrial>
+        </costList>
+        <stuffCategories>
+            <li>Metallic</li>
+        </stuffCategories>
+        <statBases>
+            <MaxHitPoints>45</MaxHitPoints>
+            <Flammability>0.8</Flammability>
+            <WorkToBuild>600</WorkToBuild>
+            <Mass>1</Mass>
+            <Beauty>-1</Beauty>
+        </statBases>
+        <placeWorkers>
+            <li>PlaceWorker_PreventInteractionSpotOverlap</li>
+        </placeWorkers>
+        <comps>
+            <li Class="CombatAI.Comps.CompProperties_Sighter">
+                <radius>8</radius>
+                <radiusNight>8</radiusNight>
+                <powered>true</powered>
+                <mannable>false</mannable>
+            </li>
+            <li Class="CompProperties_Forbiddable"/>
+            <li Class="CompProperties_Power">
+                <compClass>CompPowerTrader</compClass>
+                <basePowerConsumption>30</basePowerConsumption>
+                <shortCircuitInRain>true</shortCircuitInRain>
+            </li>
+            <li Class="CompProperties_Flickable"/>
+        </comps>
+    </ThingDef>
+
+</Defs>

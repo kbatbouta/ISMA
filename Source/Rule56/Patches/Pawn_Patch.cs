@@ -25,17 +25,26 @@ namespace CombatAI.Patches
             }
         }
 
+        [HarmonyPatch(typeof(PawnRenderer), nameof(PawnRenderer.RenderPawnAt))]
+        private static class PawnRenderer_RenderPawnAt_Patch
+        {
+	        public static bool Prefix(PawnRenderer __instance, Vector3 drawLoc)
+	        {
+		        if (fogOverlay == null && __instance.pawn.Spawned)
+		        {
+			        fogOverlay = __instance.pawn.Map.GetComp_Fast<MapComponent_FogGrid>() ?? null;
+		        }
+		        return fogOverlay == null || (Finder.Settings.Debug || !fogThings.IsFogged(drawLoc.ToIntVec3()));
+	        }
+        }
+
         [HarmonyPatch]
         private static class Mote_Draw_Patch
         {
             public static IEnumerable<MethodBase> TargetMethods()
             {
-                yield return AccessTools.Method(typeof(Mote), nameof(MoteBubble.Draw), new Type[]
-                {
-                });
-                yield return AccessTools.Method(typeof(MoteBubble), nameof(MoteBubble.Draw), new Type[]
-                {
-                });
+                yield return AccessTools.Method(typeof(Mote), nameof(MoteBubble.DrawAt));
+                yield return AccessTools.Method(typeof(MoteBubble), nameof(MoteBubble.DrawAt));
             }
 
             public static bool Prefix(Mote __instance)

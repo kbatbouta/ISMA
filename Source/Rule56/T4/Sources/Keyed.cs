@@ -5,7 +5,7 @@ namespace CombatAI.R
     // Auto generated file!
     // -------------------------------------------------
     // This file is auto generated! Mod path is:
-    // $(SolutionDir)/../../../../../1.4/Languages/English/Keyed/Translations.xml
+    // $(SolutionDir)/../../../../../1.5/Languages/English/Keyed/Translations.xml
     // -------------------------------------------------
     /// <summary> 
     /// <para>Keyed string database. This Class is generated automatically by a T4 template <c>Core/Assets/Keyed.tt</c></para> 

@@ -5,7 +5,7 @@
 <#@ output extension=".cs" #>
 <#@ import namespace="System.IO" #>
 <#
-    string texturesPath = "$(SolutionDir)/../../../../../1.4/Textures";
+    string texturesPath = "$(SolutionDir)/../../../../../1.5/Textures";
 #>
 
 using System;

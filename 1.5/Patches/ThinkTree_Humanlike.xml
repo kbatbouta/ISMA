@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+    <!-- <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThinkTreeDef[defName="Humanlike"]/thinkRoot/subNodes/li[@Class="ThinkNode_ConditionalNPCCanSelfTendNow"]</xpath>
+        <value>
+            <li Class="ThinkNode_ConditionalNPCCanSelfTendNow">                
+                <subNodes>
+                    <li Class="CombatAI.JobGiver_DuckOrRetreat" />
+                    <li Class="CombatAI.ThinkNode_ConditionalBeingTargeted">                        
+                        <invert>true</invert>
+                        <subNodes>
+                            <li Class="JobGiver_SelfTend" />
+                        </subNodes>
+                    </li>                    
+                </subNodes>
+            </li>
+        </value>
+    </Operation> -->
+
+</Patch>

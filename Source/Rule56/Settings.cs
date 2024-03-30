@@ -178,7 +178,7 @@ namespace CombatAI
 	        {
 		        foreach (var pair in _raceSettingsTemp)
 		        {
-			        _raceSettings.TryAdd(pair.Key.Item1.defName + "_" + (pair.Key.Item2?.defName ?? string.Empty), pair.Value);
+			        _raceSettings[pair.Key.Item1.defName + "_" + (pair.Key.Item2?.defName ?? string.Empty)] = pair.Value;
 		        }
 	        }
 			Scribe_Collections.Look(ref _raceSettings, "raceSettings2");

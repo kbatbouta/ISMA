@@ -6,7 +6,7 @@
         <TargetFramework>net472</TargetFramework>
         <LangVersion>latest</LangVersion>
         <PlatformTarget>x64</PlatformTarget>
-        <OutputPath>..\..\1.4\Assemblies</OutputPath>
+        <OutputPath>..\..\1.5\Assemblies</OutputPath>
         <Optimize>true</Optimize>
         <DebugType>pdbonly</DebugType>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -19,15 +19,15 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
         <DebugSymbols>true</DebugSymbols>
-        <OutputPath>..\..\1.4\Assemblies</OutputPath>
-        <OutputPath>..\..\1.4\Assemblies</OutputPath>
+        <OutputPath>..\..\1.5\Assemblies</OutputPath>
+        <OutputPath>..\..\1.5\Assemblies</OutputPath>
         <DefineConstants>TRACE;NDEBUG</DefineConstants>
         <WarningLevel>4</WarningLevel>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-        <OutputPath>..\..\1.4\Assemblies</OutputPath>
+        <OutputPath>..\..\1.5\Assemblies</OutputPath>
         <DefineConstants>TRACE;DEBUG_REACTION;DEBUG;NETFRAMEWORK;NET472;</DefineConstants>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
@@ -71,38 +71,38 @@
         </None>
     </ItemGroup>
     <ItemGroup>
-        <None Include="..\..\1.4\**\*.xml" CopyToOutputDirectory="Never">
+        <None Include="..\..\1.5\**\*.xml" CopyToOutputDirectory="Never">
             <Link>Xml\%(RecursiveDir)/%(FileName)%(Extension)</Link>
         </None>
         <None Include="..\..\About\*.xml" CopyToOutputDirectory="Never">
             <Link>Xml\About\%(FileName)%(Extension)</Link>
         </None>
-        <None Update="..\..\1.4\Languages\English\Keyed\Translations.xml">
+        <None Update="..\..\1.5\Languages\English\Keyed\Translations.xml">
             <Link>English.Lang</Link>
         </None>
-        <None Update="..\..\1.4\Patches\Races_Animal_Base.xml">
+        <None Update="..\..\1.5\Patches\Races_Animal_Base.xml">
             <Link>Xml\Patches\\Races_Animal_Base.xml</Link>
         </None>
-        <None Update="..\..\1.4\Defs\Stats\Stats_AI.xml">
+        <None Update="..\..\1.5\Defs\Stats\Stats_AI.xml">
             <Link>Xml\Defs\Stats\\Stats_AI.xml</Link>
         </None>
-        <None Update="..\..\1.4\Defs\ThingDef_Buildings\Buildings_Security.xml">
+        <None Update="..\..\1.5\Defs\ThingDef_Buildings\Buildings_Security.xml">
             <Link>Xml\Defs\ThingDef_Buildings\\Buildings_Security.xml</Link>
         </None>
-        <None Update="..\..\1.4\Defs\Misc\Designation_categories.xml">
+        <None Update="..\..\1.5\Defs\Misc\Designation_categories.xml">
             <Link>Xml\Defs\Misc\\Designation_categories.xml</Link>
         </None>
-        <None Update="..\..\1.4\Defs\ThingDef_Research\Cai5000_Researchtab.xml">
+        <None Update="..\..\1.5\Defs\ThingDef_Research\Cai5000_Researchtab.xml">
             <Link>Xml\Defs\ThingDef_Research\\Cai5000_Researchtab.xml</Link>
         </None>
-        <None Update="..\..\1.4\Defs\ThingDef_Research\Cai5000_ResearchDefs.xml">
+        <None Update="..\..\1.5\Defs\ThingDef_Research\Cai5000_ResearchDefs.xml">
             <Link>Xml\Defs\ThingDef_Research\\Cai5000_ResearchDefs.xml</Link>
         </None>
     </ItemGroup>
     <!-- ................ -->
     <!--     Packages     -->
     <ItemGroup>
-        <PackageReference Include="Krafs.Rimworld.Ref" Version="1.4.3901" GeneratePathProperty="true" />
+        <!--<PackageReference Include="Krafs.Rimworld.Ref" Version="1.5.3901" GeneratePathProperty="true" />-->
         <PackageReference Include="TaskPubliciser" Version="1.0.3" />
         <PackageReference Include="Mono.TextTransform" Version="1.0.0" GeneratePathProperty="true" ExcludeAssets="runtime" />
         <PackageReference Include="Lib.Harmony" Version="2.2.2" ExcludeAssets="runtime" />
@@ -143,9 +143,12 @@
     <Target Name="Publicise" BeforeTargets="UpdateReferences">
         <PropertyGroup>
             <!-- Just for now -->
-            <AssemblyCSharp>$(PkgKrafs_Rimworld_Ref)\ref\net472\Assembly-CSharp.dll</AssemblyCSharp>
-            <Unity_CoreModule>$(PkgKrafs_Rimworld_Ref)\ref\net472\UnityEngine.CoreModule.dll</Unity_CoreModule>
-            <PubliciseOutputPath>$(PkgKrafs_Rimworld_Ref)\ref\net472\</PubliciseOutputPath>
+            <AssemblyCSharp>D:/SteamLibrary/steamapps/common/RimWorld/RimWorldWin64_Data/Managed/Assembly-CSharp.dll</AssemblyCSharp>
+            <Unity_CoreModule>D:/SteamLibrary/steamapps/common/RimWorld/RimWorldWin64_Data/Managed/UnityEngine.CoreModule.dll</Unity_CoreModule>
+            <!-- <AssemblyCSharp>$(PkgKrafs_Rimworld_Ref)\ref\net472\Assembly-CSharp.dll</AssemblyCSharp>-->
+            <!--<Unity_CoreModule>$(PkgKrafs_Rimworld_Ref)\ref\net472\UnityEngine.CoreModule.dll</Unity_CoreModule>-->
+            <!--<PubliciseOutputPath>$(PkgKrafs_Rimworld_Ref)\ref\net472\</PubliciseOutputPath>-->
+            <PubliciseOutputPath>D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\Publicsized</PubliciseOutputPath>
             <AssemblyCSharp_Publicised>$(PubliciseOutputPath)Assembly-CSharp_publicised.dll</AssemblyCSharp_Publicised>
             <Unity_CoreModule_Publicised>$(PubliciseOutputPath)UnityEngine.CoreModule_publicised.dll</Unity_CoreModule_Publicised>
         </PropertyGroup>
@@ -153,7 +156,7 @@
         <Message Importance="High" Text="2.  Publicising Rimworld Assembly ..." />
         <Message Importance="High" Text="2.1 AssemblyCSharp Path ($(AssemblyCSharp))" />
         <Publicise TargetAssemblyPath="$(AssemblyCSharp)" OutputPath="$(PubliciseOutputPath)" Condition="Exists('$(AssemblyCSharp)')" />
-        <Publicise TargetAssemblyPath="$(Unity_CoreModule)" OutputPath="$(PubliciseOutputPath)" Condition="Exists('$(Unity_CoreModule)')" />
+       <!-- <Publicise TargetAssemblyPath="$(Unity_CoreModule)" OutputPath="$(PubliciseOutputPath)" Condition="Exists('$(Unity_CoreModule)')" />-->
         <!-- Add references to the new publicised dlls -->
         <Message Importance="High" Text="Replacing reference to un-publicised assemblies with publicised equivalents ..." />
         <ItemGroup>
@@ -176,6 +179,8 @@
         <ItemGroup>
             <Reference Remove="$(PkgKrafs_Rimworld_Ref)\ref\net472\Assembly-CSharp.dll" />
             <Reference Remove="$(PkgKrafs_Rimworld_Ref)\ref\net472\UnityEngine.CoreModule.dll" />
+            
+            <Reference Include="D:/SteamLibrary/steamapps/common/RimWorld/RimWorldWin64_Data/Managed/Unity*" />
         </ItemGroup>
     </Target>
     <PropertyGroup>

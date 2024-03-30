@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-    <name>CAI 5000 - Advanced AI + Fog Of War</name>
+    <name>[1.5-1.4] CAI 5000 - Advanced AI + Fog Of War</name>
     <author>Krkr</author>
     <supportedVersions>
         <li>1.4</li>
+        <li>1.5</li>
     </supportedVersions>
     <packageId>Krkr.rule56</packageId>
     <modDependenciesByVersion>

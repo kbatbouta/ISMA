@@ -5,7 +5,7 @@
 <#@ output extension=".cs" #>
 <#@ import namespace="System.Xml" #>
 <#
-    string docPath = "$(SolutionDir)/../../../../../1.4/Languages/English/Keyed/Translations.xml";
+    string docPath = "$(SolutionDir)/../../../../../1.5/Languages/English/Keyed/Translations.xml";
     XmlDocument doc = new XmlDocument();
     doc.Load(docPath);
 #>

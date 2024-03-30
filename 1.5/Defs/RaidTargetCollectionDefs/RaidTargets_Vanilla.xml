@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+    <CombatAI.RaidTargetCollectionDef>
+        <defName>CombatAI_RT_Vanilla</defName>        
+        <targets>
+            <li>WoodFiredGenerator</li>
+            <li>ChemfuelPoweredGenerator</li>
+            <li>WindTurbine</li>
+            <li>Battery</li>
+            <li>SolarGenerator</li>
+            <li>GeothermalGenerator</li>
+        </targets>
+    </CombatAI.RaidTargetCollectionDef>
+</Defs>

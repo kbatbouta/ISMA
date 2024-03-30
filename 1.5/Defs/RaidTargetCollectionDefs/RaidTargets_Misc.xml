@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+    <CombatAI.RaidTargetCollectionDef>
+        <defName>CombatAI_RT_Rimatomics</defName>
+        <packageId>Dubwise.Rimatomics</packageId>
+        <targets>
+            <li>RimatomicsRTG</li>
+            <li>ReactorCoreA</li>
+            <li>ReactorCoreB</li>
+            <li>ReactorCoreC</li>
+            <li>Turbine</li>
+            <li>BigTurbine</li>
+            <li>CoolingRadiator</li>
+            <li>CoolingWater</li>
+            <li>CoolingTower</li>
+        </targets>
+    </CombatAI.RaidTargetCollectionDef>
+
+    <CombatAI.RaidTargetCollectionDef>
+        <defName>CombatAI_RT_Rimefeller</defName>
+        <packageId>Dubwise.Rimefeller</packageId>
+        <targets>
+            <li>SynthyleneRefiner</li>
+            <li>NapalmRefiner</li>
+            <li>SynthreadRefiner</li>
+            <li>SynthamideRefiner</li>
+            <li>OilWell</li>
+            <li>DeepOilWell</li>
+            <li>OilStorage</li>
+        </targets>
+    </CombatAI.RaidTargetCollectionDef>
+</Defs>

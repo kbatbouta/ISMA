@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ResearchTabDef>
+        <defName>cai5000</defName>
+        <label>CombatAI5000</label>
+    </ResearchTabDef>
+</Defs>

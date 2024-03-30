@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+    <DutyDef>
+        <defName>CombatAI_AssaultPoint</defName>
+        <alwaysShowWeapon>true</alwaysShowWeapon>
+        <thinkNode Class="ThinkNode_Priority">
+            <!-- Todo here - if outside of duty radius, go to within duty radius-->
+            <!-- Currently this is handled by a hack in JobGiver_AIFightBase-->
+            <subNodes>
+                <li Class="JobGiver_TakeCombatEnhancingDrug">
+                    <onlyIfInDanger>true</onlyIfInDanger>
+                </li>
+                <li Class="CombatAI.ThinkNode_ConditionalReacted">
+                    <ticks>900</ticks>
+                    <subNodes>
+                        <li Class="JobGiver_AIFightEnemies">
+                            <targetAcquireRadius>35</targetAcquireRadius>
+                            <targetKeepRadius>42</targetKeepRadius>
+                        </li>
+                    </subNodes>
+                </li>
+                <li Class="JobGiver_AIDefendPoint">
+                    <targetAcquireRadius>65</targetAcquireRadius>
+                    <targetKeepRadius>72</targetKeepRadius>
+                </li>                
+                <li Class="ThinkNode_ForbidOutsideFlagRadius">
+                    <maxDistToSquadFlag>16</maxDistToSquadFlag>
+                    <subNodes>
+                        <li Class="ThinkNode_Subtree">
+                            <treeDef>SatisfyBasicNeedsAndWork</treeDef>
+                        </li>
+                    </subNodes>
+                </li>
+                <li Class="JobGiver_WanderNearDutyLocation">
+                    <wanderRadius>12</wanderRadius>
+                    <locomotionUrgencyOutsideRadius>Sprint</locomotionUrgencyOutsideRadius>
+                </li>
+                <li Class="JobGiver_AITrashBuildingsDistant">
+                    <attackAllInert>true</attackAllInert>
+                </li>
+                <li Class="JobGiver_AITrashColonyClose"/>
+                <li Class="JobGiver_AITrashBuildingsDistant"/>
+            </subNodes>
+        </thinkNode>
+    </DutyDef>
+
+    <DutyDef>
+        <defName>CombatAI_AssaultPawn</defName>
+        <alwaysShowWeapon>true</alwaysShowWeapon>
+        <thinkNode Class="ThinkNode_Priority">
+            <!-- Todo here - if outside of duty radius, go to within duty radius-->
+            <!-- Currently this is handled by a hack in JobGiver_AIFightBase-->
+            <subNodes>
+                <li Class="JobGiver_TakeCombatEnhancingDrug">
+                    <onlyIfInDanger>true</onlyIfInDanger>
+                </li>
+                <li Class="ThinkNode_Subtree" MayRequire="Ludeon.RimWorld.Biotech">
+                    <treeDef>Abilities_Aggressive</treeDef>
+                </li>
+                <li Class="CombatAI.ThinkNode_ConditionalReacted">
+                    <ticks>900</ticks>
+                    <subNodes>
+                        <li Class="JobGiver_AIFightEnemies">
+                            <targetAcquireRadius>35</targetAcquireRadius>
+                            <targetKeepRadius>42</targetKeepRadius>
+                        </li>
+                    </subNodes>
+                </li>
+                <li Class="JobGiver_AIDefendPoint">
+                    <targetAcquireRadius>32</targetAcquireRadius>
+                    <targetKeepRadius>28</targetKeepRadius>
+                </li>
+                <li Class="ThinkNode_ForbidOutsideFlagRadius">
+                    <maxDistToSquadFlag>16</maxDistToSquadFlag>
+                    <subNodes>
+                        <li Class="ThinkNode_Subtree">
+                            <treeDef>SatisfyBasicNeedsAndWork</treeDef>
+                        </li>
+                    </subNodes>
+                </li>
+                <li Class="JobGiver_WanderNearDutyLocation">
+                    <wanderRadius>8</wanderRadius>
+                    <expiryInterval>30</expiryInterval>
+                    <locomotionUrgencyOutsideRadius>Sprint</locomotionUrgencyOutsideRadius>
+                </li>
+                <li Class="JobGiver_AITrashBuildingsDistant">
+                    <attackAllInert>true</attackAllInert>
+                </li>
+                <li Class="JobGiver_AITrashColonyClose"/>
+                <li Class="JobGiver_AITrashBuildingsDistant"/>
+            </subNodes>
+        </thinkNode>
+    </DutyDef>
+
+    <DutyDef>
+        <defName>CombatAI_Escort</defName>
+        <alwaysShowWeapon>true</alwaysShowWeapon>
+        <thinkNode Class="ThinkNode_Priority">
+            <subNodes>
+                <li Class="JobGiver_TakeCombatEnhancingDrug">
+                    <onlyIfInDanger>true</onlyIfInDanger>
+                </li>
+                <li Class="CombatAI.ThinkNode_ConditionalReacted">
+                    <ticks>900</ticks>
+                    <subNodes>
+                        <li Class="JobGiver_AIFightEnemies">
+                            <targetAcquireRadius>35</targetAcquireRadius>
+                            <targetKeepRadius>42</targetKeepRadius>
+                        </li>
+                    </subNodes>
+                </li>
+                <li Class="JobGiver_AIDefendEscortee">
+                    <targetAcquireRadius>35</targetAcquireRadius>
+                    <targetKeepRadius>72</targetKeepRadius>
+                </li>        
+                <li Class="CombatAI.JobGiver_CAIFollowEscortee"/>
+                <li Class="ThinkNode_Subtree">
+                    <treeDef>SatisfyVeryUrgentNeeds</treeDef>
+                </li>
+                <li Class="JobGiver_WanderNearDutyLocation">
+                    <wanderRadius>8</wanderRadius>
+                    <expiryInterval>60</expiryInterval>
+                    <locomotionUrgencyOutsideRadius>Jog</locomotionUrgencyOutsideRadius>
+                </li>             
+                <li Class="JobGiver_AITrashBuildingsDistant">
+                    <attackAllInert>true</attackAllInert>
+                </li>
+                <li Class="JobGiver_AITrashColonyClose"/>
+                <li Class="JobGiver_AITrashBuildingsDistant"/>
+            </subNodes>
+        </thinkNode>
+    </DutyDef>
+
+</Defs>
