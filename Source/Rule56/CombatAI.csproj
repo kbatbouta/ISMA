@@ -145,10 +145,10 @@
             <!-- Just for now -->
             <AssemblyCSharp>D:/SteamLibrary/steamapps/common/RimWorld/RimWorldWin64_Data/Managed/Assembly-CSharp.dll</AssemblyCSharp>
             <Unity_CoreModule>D:/SteamLibrary/steamapps/common/RimWorld/RimWorldWin64_Data/Managed/UnityEngine.CoreModule.dll</Unity_CoreModule>
+            <PubliciseOutputPath>D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\Publicsized</PubliciseOutputPath>
             <!-- <AssemblyCSharp>$(PkgKrafs_Rimworld_Ref)\ref\net472\Assembly-CSharp.dll</AssemblyCSharp>-->
             <!--<Unity_CoreModule>$(PkgKrafs_Rimworld_Ref)\ref\net472\UnityEngine.CoreModule.dll</Unity_CoreModule>-->
             <!--<PubliciseOutputPath>$(PkgKrafs_Rimworld_Ref)\ref\net472\</PubliciseOutputPath>-->
-            <PubliciseOutputPath>D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\Publicsized</PubliciseOutputPath>
             <AssemblyCSharp_Publicised>$(PubliciseOutputPath)Assembly-CSharp_publicised.dll</AssemblyCSharp_Publicised>
             <Unity_CoreModule_Publicised>$(PubliciseOutputPath)UnityEngine.CoreModule_publicised.dll</Unity_CoreModule_Publicised>
         </PropertyGroup>
