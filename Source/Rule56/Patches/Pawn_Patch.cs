@@ -9,19 +9,21 @@ namespace CombatAI.Patches
 {
     public static class Pawn_Patch
     {
-        private static MapComponent_FogGrid fogThings;
-        private static MapComponent_FogGrid fogOverlay;
-
         [HarmonyPatch(typeof(Pawn), nameof(Pawn.DrawAt))]
         private static class Pawn_DrawAt_Patch
         {
             public static bool Prefix(Pawn __instance, Vector3 drawLoc)
             {
-                if (fogOverlay == null &&  __instance.Spawned)
+	            MapComponent_FogGrid fog;
+                if (__instance.Spawned)
                 {
-                    fogOverlay = __instance.Map.GetComp_Fast<MapComponent_FogGrid>() ?? null;
+                    fog = __instance.Map.GetComp_Fast<MapComponent_FogGrid>() ?? null;
                 }
-                return fogOverlay == null || (Finder.Settings.Debug || !fogThings.IsFogged(drawLoc.ToIntVec3()));
+                else
+                {
+	                fog = null;
+                }
+                return fog == null || (Finder.Settings.Debug || !fog.IsFogged(drawLoc.ToIntVec3()));
             }
         }
 
@@ -30,11 +32,16 @@ namespace CombatAI.Patches
         {
 	        public static bool Prefix(PawnRenderer __instance, Vector3 drawLoc)
 	        {
-		        if (fogOverlay == null && __instance.pawn.Spawned)
+		        MapComponent_FogGrid fog;
+		        if (__instance.pawn.Spawned)
 		        {
-			        fogOverlay = __instance.pawn.Map.GetComp_Fast<MapComponent_FogGrid>() ?? null;
+			        fog = __instance.pawn.Map.GetComp_Fast<MapComponent_FogGrid>() ?? null;
 		        }
-		        return fogOverlay == null || (Finder.Settings.Debug || !fogThings.IsFogged(drawLoc.ToIntVec3()));
+		        else
+		        {
+			        fog = null;
+		        }
+		        return fog == null || (Finder.Settings.Debug || !fog.IsFogged(drawLoc.ToIntVec3()));
 	        }
         }
 
@@ -49,8 +56,24 @@ namespace CombatAI.Patches
 
             public static bool Prefix(Mote __instance)
             {
-                return !fogThings.IsFogged(__instance.Position);
+                return !__instance.Map.GetComp_Fast<MapComponent_FogGrid>().IsFogged(__instance.Position);
             }
+        }
+        
+        [HarmonyPatch(typeof(SilhouetteUtility), nameof(SilhouetteUtility.ShouldDrawSilhouette))]
+        private static class SilhouetteUtility_Patch
+        {
+	        public static bool Prefix(Thing thing, ref bool __result)
+	        {
+		        if (thing.Spawned)
+		        {
+			        if (thing.Map.GetComp_Fast<MapComponent_FogGrid>().IsFogged(thing.DrawPos.ToIntVec3()))
+			        {
+				        return __result = false;
+			        }
+		        }
+		        return true;
+	        }
         }
 
         [HarmonyPatch(typeof(Pawn), nameof(Pawn.DrawGUIOverlay))]
@@ -58,43 +81,16 @@ namespace CombatAI.Patches
         {
             public static bool Prefix(Pawn __instance)
             {
-                if (fogOverlay == null && __instance.Spawned)
-                {
-                    fogOverlay = __instance.Map.GetComp_Fast<MapComponent_FogGrid>() ?? null;
-                }
-                return fogOverlay == null || (!fogOverlay.IsFogged(__instance.Position) && !Finder.Settings.Debug_DisablePawnGuiOverlay);
-            }
-        }
-
-        [HarmonyPatch(typeof(DynamicDrawManager), nameof(DynamicDrawManager.DrawDynamicThings))]
-        private static class DynamicDrawManager_DrawDynamicThings_Patch
-        {
-            public static void Prefix(DynamicDrawManager __instance)
-            {
-                fogThings = __instance.map?.GetComp_Fast<MapComponent_FogGrid>();
-            }
-
-            public static void Postfix()
-            {
-                fogThings = null;
-            }
-        }
-
-        [HarmonyPatch(typeof(ThingOverlays), nameof(ThingOverlays.ThingOverlaysOnGUI))]
-        private static class ThingOverlays_ThingOverlaysOnGUI_Patch
-        {
-            public static void Prefix(ThingOverlays __instance)
-            {
-                if (Event.current.type != EventType.Repaint)
-                {
-                    return;
-                }
-                fogOverlay = Find.CurrentMap?.GetComp_Fast<MapComponent_FogGrid>() ?? null;
-            }
-
-            public static void Postfix()
-            {
-                fogOverlay = null;
+	            MapComponent_FogGrid fog;
+	            if (__instance.Spawned)
+	            {
+		            fog = __instance.Map.GetComp_Fast<MapComponent_FogGrid>() ?? null;
+	            }
+	            else
+	            {
+		            fog = null;
+	            }
+                return fog == null || (!fog.IsFogged(__instance.Position) && !Finder.Settings.Debug_DisablePawnGuiOverlay);
             }
         }
     }

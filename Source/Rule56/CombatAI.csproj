@@ -102,10 +102,12 @@
     <!-- ................ -->
     <!--     Packages     -->
     <ItemGroup>
-        <!--<PackageReference Include="Krafs.Rimworld.Ref" Version="1.5.3901" GeneratePathProperty="true" />-->
+        <PackageReference Include="Krafs.Rimworld.Ref" Version="1.5.4066" GeneratePathProperty="true" ExcludeAssets="runtime">
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
         <PackageReference Include="TaskPubliciser" Version="1.0.3" />
         <PackageReference Include="Mono.TextTransform" Version="1.0.0" GeneratePathProperty="true" ExcludeAssets="runtime" />
-        <PackageReference Include="Lib.Harmony" Version="2.2.2" ExcludeAssets="runtime" />
+        <PackageReference Include="Lib.Harmony" Version="2.3.3" ExcludeAssets="runtime" />
         <PackageReference Include="Microsoft.NETCore.Platforms" Version="5.0.3" />
         <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net472" Version="1.0.3">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -143,12 +145,9 @@
     <Target Name="Publicise" BeforeTargets="UpdateReferences">
         <PropertyGroup>
             <!-- Just for now -->
-            <AssemblyCSharp>D:/SteamLibrary/steamapps/common/RimWorld/RimWorldWin64_Data/Managed/Assembly-CSharp.dll</AssemblyCSharp>
-            <Unity_CoreModule>D:/SteamLibrary/steamapps/common/RimWorld/RimWorldWin64_Data/Managed/UnityEngine.CoreModule.dll</Unity_CoreModule>
-            <PubliciseOutputPath>D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\Publicsized</PubliciseOutputPath>
-            <!-- <AssemblyCSharp>$(PkgKrafs_Rimworld_Ref)\ref\net472\Assembly-CSharp.dll</AssemblyCSharp>-->
-            <!--<Unity_CoreModule>$(PkgKrafs_Rimworld_Ref)\ref\net472\UnityEngine.CoreModule.dll</Unity_CoreModule>-->
-            <!--<PubliciseOutputPath>$(PkgKrafs_Rimworld_Ref)\ref\net472\</PubliciseOutputPath>-->
+            <AssemblyCSharp>$(PkgKrafs_Rimworld_Ref)\ref\net472\Assembly-CSharp.dll</AssemblyCSharp>
+            <Unity_CoreModule>$(PkgKrafs_Rimworld_Ref)\ref\net472\UnityEngine.CoreModule.dll</Unity_CoreModule>
+            <PubliciseOutputPath>$(PkgKrafs_Rimworld_Ref)\ref\net472\</PubliciseOutputPath>
             <AssemblyCSharp_Publicised>$(PubliciseOutputPath)Assembly-CSharp_publicised.dll</AssemblyCSharp_Publicised>
             <Unity_CoreModule_Publicised>$(PubliciseOutputPath)UnityEngine.CoreModule_publicised.dll</Unity_CoreModule_Publicised>
         </PropertyGroup>
@@ -156,7 +155,7 @@
         <Message Importance="High" Text="2.  Publicising Rimworld Assembly ..." />
         <Message Importance="High" Text="2.1 AssemblyCSharp Path ($(AssemblyCSharp))" />
         <Publicise TargetAssemblyPath="$(AssemblyCSharp)" OutputPath="$(PubliciseOutputPath)" Condition="Exists('$(AssemblyCSharp)')" />
-       <!-- <Publicise TargetAssemblyPath="$(Unity_CoreModule)" OutputPath="$(PubliciseOutputPath)" Condition="Exists('$(Unity_CoreModule)')" />-->
+        <Publicise TargetAssemblyPath="$(Unity_CoreModule)" OutputPath="$(PubliciseOutputPath)" Condition="Exists('$(Unity_CoreModule)')" />
         <!-- Add references to the new publicised dlls -->
         <Message Importance="High" Text="Replacing reference to un-publicised assemblies with publicised equivalents ..." />
         <ItemGroup>
@@ -179,8 +178,6 @@
         <ItemGroup>
             <Reference Remove="$(PkgKrafs_Rimworld_Ref)\ref\net472\Assembly-CSharp.dll" />
             <Reference Remove="$(PkgKrafs_Rimworld_Ref)\ref\net472\UnityEngine.CoreModule.dll" />
-            
-            <Reference Include="D:/SteamLibrary/steamapps/common/RimWorld/RimWorldWin64_Data/Managed/Unity*" />
         </ItemGroup>
     </Target>
     <PropertyGroup>
